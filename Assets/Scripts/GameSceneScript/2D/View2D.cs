@@ -1,0 +1,110 @@
+using System.Collections;
+using System.Collections.Generic;
+using UnityEngine;
+using UnityEngine.UI;
+using TMPro;
+
+public class View2D : MonoBehaviour
+{
+    [SerializeField] private TextMeshProUGUI _textObject;
+    [SerializeField] private int _aroundBombNum;
+    [SerializeField] private int _gridStatus;
+    [SerializeField] private int[] _index;
+    [SerializeField] private Sprite _displayFlagImage;
+    [SerializeField] private Sprite _nonDisplayFlagImage;
+    [SerializeField] private Sprite _digedImage;
+    [SerializeField] private Sprite _bombDridImage;
+    [SerializeField] private GameObject _gameControllerObject;
+
+    public int SetText
+    {
+        set
+        { 
+            _textObject.text = value.ToString();
+            _aroundBombNum = value;
+        }
+    }
+    public int GridStatus
+    {
+        get { return _gridStatus; }
+        set 
+        {
+
+            switch (value)
+            {
+                case 0: //未着手
+                    if (_gridStatus == 1 || _gridStatus == 0)
+                    {
+                        transform.GetChild(0).gameObject.SetActive(false);
+                        GetComponent<Image>().sprite = _nonDisplayFlagImage;
+                        _gridStatus = value;
+                        transform.parent.parent.GetComponent<SetGrid>().ChangeGridStatus(_index, value);
+;                    }
+                    break;
+                case 1: //旗の設置/解除
+                    if (_gridStatus == 0)
+                    {
+                        transform.GetChild(0).gameObject.SetActive(false);
+                        _gridStatus = 1;
+                        transform.parent.parent.GetComponent<SetGrid>().ChangeGridStatus(_index, 1);
+                        GetComponent<Image>().sprite = _displayFlagImage;
+                    }
+                    else if (_gridStatus == 1)
+                    {
+                        transform.GetChild(0).gameObject.SetActive(false);
+                        _gridStatus = 0;
+                        transform.parent.parent.GetComponent<SetGrid>().ChangeGridStatus(_index, 0);
+                        GetComponent<Image>().sprite = _nonDisplayFlagImage;
+                    }
+                    break;
+                case 2: //開示済み
+                    if (_gridStatus == 0 || _gridStatus == 3)
+                    {
+                        _gridStatus = value;
+                        if (_aroundBombNum == 27)
+                        {
+                            GetComponent<Image>().sprite = _bombDridImage;
+                            _gameControllerObject.GetComponent<GameController>().DefeatGame();
+                        }
+                        else if (_aroundBombNum == 0)
+                        {
+                            GetComponent<Image>().sprite = _digedImage;
+                            transform.parent.parent.GetComponent<SetGrid>().ChangeGridStatus(_index, value);
+                            _gameControllerObject.GetComponent<GameController>().RemainGridNum--;
+                        }
+                        else
+                        {
+                            transform.GetChild(0).gameObject.SetActive(true);
+                            GetComponent<Image>().sprite = _digedImage;
+                            transform.parent.parent.GetComponent<SetGrid>().ChangeGridStatus(_index, value);
+                            _gameControllerObject.GetComponent<GameController>().RemainGridNum--;
+                        }
+                    }
+                    break;
+                case 3: //開示待ち
+                    if (_gridStatus == 0)
+                    {
+                        transform.GetChild(0).gameObject.SetActive(false);
+                        _gridStatus = value;
+                        transform.parent.parent.GetComponent<SetGrid>().ChangeGridStatus(_index, value);
+                    }
+                    break;
+                default: //旗の誤設置
+                    transform.GetChild(0).gameObject.SetActive(false);
+                    _gridStatus = value;
+                    transform.parent.parent.GetComponent<SetGrid>().ChangeGridStatus(_index, value);
+                    break;
+            }
+        }
+    }
+    public int[] Index
+    {
+        get { return _index; }
+        set { _index = value; }
+    }
+    public GameObject GameControllerObject
+    {
+        get { return _gameControllerObject; }
+        set { _gameControllerObject = value; }
+    }
+}
