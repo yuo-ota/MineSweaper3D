@@ -16,16 +16,16 @@ public class ResultController : SceneController
 
     void Start()
     {
-        DiggedGridNum = GameStatus.DiggedGridNum;
-        UsedHintNum = GameStatus.UsedHintNum;
-        Timer = GameStatus.Timer;
-        IsCleared = GameStatus.IsCleared;
+        DiggedGridNum = GameData.DiggedGridNum;
+        UsedHintNum = GameData.UsedHintNum;
+        Timer = GameData.Timer;
+        IsCleared = GameData.IsCleared;
         _displayScoreObject.GetComponent<ResultScoreDisplay>().UpdateScore(DiggedGridNum, UsedHintNum, Timer, IsCleared);
     }
     override
     public void MoveScene(string sceneName)
     {
-        GameStatus.BeforeSceneName = "Result";
+        GameData.BeforeSceneName = "Result";
         //シーンのロード
         SceneManager.LoadScene(sceneName);
     }

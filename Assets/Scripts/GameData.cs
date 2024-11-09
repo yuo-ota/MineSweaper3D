@@ -1,7 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-public class GameStatus : MonoBehaviour
+public class GameData : MonoBehaviour
 {
     private static int _mapSeed;
     private static int[] _mapSize = {5, 5, 5};
@@ -17,7 +17,7 @@ public class GameStatus : MonoBehaviour
     private static int _volumeOfSe = 50;
     private static int _colorMode = 0;  //0:正常色覚 1:1型2色覚 2:2型2色覚 3:3型2色覚
     private static string _beforeSceneName = null;
-    private static bool _isInprogress = false;
+    private static int _gameStatus = 0;
     private static bool _isCleared = false;
 
     public static int MapSeed
@@ -90,10 +90,10 @@ public class GameStatus : MonoBehaviour
         get { return _beforeSceneName; }
         set { _beforeSceneName = value; }
     }
-    public static bool IsInProgress
+    public static int GameStatus
     {
-        get { return _isInprogress; }
-        set { _isInprogress = value; }
+        get { return _gameStatus; }
+        set { _gameStatus = value; }
     }
     public static bool IsCleared
     {

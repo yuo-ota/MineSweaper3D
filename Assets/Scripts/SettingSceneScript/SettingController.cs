@@ -18,10 +18,10 @@ public class SettingController : SceneController
     // Start is called before the first frame update
     void Start()
     {
-        IsEnglish = GameStatus.IsEnglish;
-        VolumeOfBgm = GameStatus.VolumeOfBgm;
-        VolumeOfSe = GameStatus.VolumeOfSe;
-        ColorMode = GameStatus.ColorMode;
+        IsEnglish = GameData.IsEnglish;
+        VolumeOfBgm = GameData.VolumeOfBgm;
+        VolumeOfSe = GameData.VolumeOfSe;
+        ColorMode = GameData.ColorMode;
     }
 
     // Update is called once per frame
@@ -31,11 +31,11 @@ public class SettingController : SceneController
     override
     public void MoveScene(string sceneName)
     {
-        GameStatus.BeforeSceneName = "Setting";
-        GameStatus.IsEnglish = IsEnglish;
-        GameStatus.VolumeOfBgm = VolumeOfBgm;
-        GameStatus.VolumeOfSe = VolumeOfSe;
-        GameStatus.ColorMode = ColorMode;
+        GameData.BeforeSceneName = "Setting";
+        GameData.IsEnglish = IsEnglish;
+        GameData.VolumeOfBgm = VolumeOfBgm;
+        GameData.VolumeOfSe = VolumeOfSe;
+        GameData.ColorMode = ColorMode;
         //シーンのロード
         SceneManager.LoadScene(sceneName);
     }

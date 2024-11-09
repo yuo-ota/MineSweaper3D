@@ -16,6 +16,7 @@ public class GameController : SceneController
     [SerializeField] private int[,,] _stageStatus;
     [SerializeField] private int _remainGridNum;
     [SerializeField] private bool _canMoveOtherPage;
+    [SerializeField] private int _gameStatus;   //0:プレイしていない 1:プレイ中 2:失敗 3:クリア
     private float _milisec;
     [SerializeField] private bool _isEmphasize3Dview;
     [SerializeField] private bool _isExpand3Dview;
@@ -30,18 +31,26 @@ public class GameController : SceneController
     [SerializeField] private TextMeshProUGUI _displayScore;
     void Start()
     {
-        MapSize = GameStatus.MapSize;
-        UsedHintNum = GameStatus.UsedHintNum;
-        Timer = GameStatus.Timer;
-        Score = GameStatus.Score;
-        Stage = GameStatus.Stage;
-        StageStatus = GameStatus.StageStatus;
-        RemainGridNum = MapSize[0] * MapSize[1] * MapSize[2] - GameStatus.BombNum;
+        MapSize = GameData.MapSize;
+        UsedHintNum = GameData.UsedHintNum;
+        Timer = GameData.Timer;
+        Score = GameData.Score;
+        Stage = GameData.Stage;
+        StageStatus = GameData.StageStatus;
+        GameStatus = GameData.GameStatus;
+        RemainGridNum = MapSize[0] * MapSize[1] * MapSize[2] - GameData.BombNum;
         IsEmphasize3Dview = false;
         IsExpand3Dview = false;
         _canMoveOtherPage = true;
         _setCubeObject.GetComponent<SetCube>().SettingPrefub(MapSize, Stage, StageStatus);
         _setGridObject.GetComponent<SetGrid>().SettingPrefub(MapSize, Stage, StageStatus);
+        Debug.Log(GameStatus);
+        if (GameStatus == 1 || GameStatus == 2)
+        {
+            _mouseControllObject.GetComponent<MouseInput>().CanMouseInput = false;
+            _setCubeObject.GetComponent<SetCube>().ActiveLayer = -1;
+            _gameUIObject.GetComponent<GameUI>().MoveResult();
+        }
     }
     private void Update()
     {
@@ -55,20 +64,16 @@ public class GameController : SceneController
     override
     public void MoveScene(string sceneName)
     {
-        GameStatus.IsInProgress = true;
-        if (sceneName == "Result")
-        {
-            GameStatus.IsInProgress = false;
-        }
-        else if (!_canMoveOtherPage)
+        if (!_canMoveOtherPage)
         {
             return;
         }
-        GameStatus.BeforeSceneName = "Game";
-        GameStatus.UsedHintNum = UsedHintNum;
-        GameStatus.Timer = Timer;
-        GameStatus.Score = Score;
-        GameStatus.Stage = Stage;
+        GameData.BeforeSceneName = "Game";
+        GameData.UsedHintNum = UsedHintNum;
+        GameData.Timer = Timer;
+        GameData.Score = Score;
+        GameData.Stage = Stage;
+        GameData.GameStatus = GameStatus;
         //シーンのロード
         SceneManager.LoadScene(sceneName);
     }
@@ -139,6 +144,11 @@ public class GameController : SceneController
         get { return _stageStatus; }
         set { _stageStatus = value; }
     }
+    public int GameStatus
+    {
+        get { return _gameStatus; }
+        set { _gameStatus = value; }
+    }
     public void UseHint()
     {
         UsedHintNum++;
@@ -161,9 +171,9 @@ public class GameController : SceneController
         Debug.Log("clear");
         _mouseControllObject.GetComponent<MouseInput>().CanMouseInput = false;
         _canMoveOtherPage = false;
+        _gameStatus = 3;
         _gameUIObject.GetComponent<GameUI>().MoveResult();
         _setCubeObject.GetComponent<SetCube>().ActiveLayer = -1;
-        //MoveScene("Result");
         Invoke("CanMoveOtherPageTrue", 3f);
     }
     public void DefeatGame()
@@ -171,10 +181,10 @@ public class GameController : SceneController
         Debug.Log("Defeat");
         _mouseControllObject.GetComponent<MouseInput>().CanMouseInput = false;
         _canMoveOtherPage = false;
+        _gameStatus = 2;
         _gameUIObject.GetComponent<GameUI>().MoveResult();
         _setCubeObject.GetComponent<SetCube>().ActiveLayer = -1;
         _setCubeObject.GetComponent<SetCube>().OpenCubes();
-        //MoveScene("Result");
         Invoke("CanMoveOtherPageTrue", 3f);
     }
     public void CanMoveOtherPageTrue()

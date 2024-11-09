@@ -71,7 +71,7 @@ public class MakeMap : MonoBehaviour
     }
     public void FinishGenerate(int bomb)
     {
-        GameStatus.BombNum = bomb;
+        GameData.BombNum = bomb;
         GetComponent<GameSettingController>().Stage = Stage;
         GetComponent<GameSettingController>().StageStatus = StageStatus;
     }

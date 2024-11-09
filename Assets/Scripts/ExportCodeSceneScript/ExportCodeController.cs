@@ -23,19 +23,19 @@ public class ExportCodeController : SceneController
 
     private void Start()
     {
-        MapSeed = GameStatus.MapSeed;
-        MapSize = GameStatus.MapSize;
-        Stage = GameStatus.Stage;
-        StageStatus = GameStatus.StageStatus;
-        DiggedGridNum = GameStatus.DiggedGridNum;
-        UsedHintNum = GameStatus.UsedHintNum;
-        Timer = GameStatus.Timer;
-        Score = GameStatus.Score;
+        MapSeed = GameData.MapSeed;
+        MapSize = GameData.MapSize;
+        Stage = GameData.Stage;
+        StageStatus = GameData.StageStatus;
+        DiggedGridNum = GameData.DiggedGridNum;
+        UsedHintNum = GameData.UsedHintNum;
+        Timer = GameData.Timer;
+        Score = GameData.Score;
     }
     override
     public void MoveScene(string sceneName)
     {
-        GameStatus.BeforeSceneName = "ExportCode";
+        GameData.BeforeSceneName = "ExportCode";
         //シーンのロード
         SceneManager.LoadScene(sceneName);
     }

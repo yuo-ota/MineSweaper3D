@@ -7,6 +7,6 @@ public class CreditUI : MonoBehaviour
     [SerializeField] private GameObject _creditControllerObject;
     public void gotoPreScene()
     {
-        _creditControllerObject.GetComponent<CreditController>().MoveScene(GameStatus.BeforeSceneName);
+        _creditControllerObject.GetComponent<CreditController>().MoveScene(GameData.BeforeSceneName);
     }
 }

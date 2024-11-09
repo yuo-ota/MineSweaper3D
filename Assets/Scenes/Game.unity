@@ -3264,6 +3264,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 44dadd4262071564bae9425f69154670, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _gameControllerObject: {fileID: 1607080516}
   _2dViewControlObject: {fileID: 1394571763}
   _3dViewControlObject: {fileID: 476667666}
   _gridControlObject: {fileID: 1394571763}
@@ -5361,6 +5362,7 @@ MonoBehaviour:
   _score: 0
   _remainGridNum: 0
   _canMoveOtherPage: 0
+  _gameStatus: 0
   _isEmphasize3Dview: 0
   _isExpand3Dview: 0
   _gameUIObject: {fileID: 971103817}

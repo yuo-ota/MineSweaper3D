@@ -18,7 +18,7 @@ public class CreditController : SceneController
     override
     public void MoveScene(string sceneName)
     {
-        GameStatus.BeforeSceneName = "Credit";
+        GameData.BeforeSceneName = "Credit";
         //シーンのロード
         SceneManager.LoadScene(sceneName);
     }

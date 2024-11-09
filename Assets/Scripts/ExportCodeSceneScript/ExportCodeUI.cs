@@ -19,7 +19,7 @@ public class ExportCodeUI : MonoBehaviour
     }
     public void goToPreScene()
     {
-        _exportCodeControllerObject.GetComponent<ExportCodeController>().MoveScene(GameStatus.BeforeSceneName);
+        _exportCodeControllerObject.GetComponent<ExportCodeController>().MoveScene(GameData.BeforeSceneName);
     }
     public bool IsCopyDone
     {

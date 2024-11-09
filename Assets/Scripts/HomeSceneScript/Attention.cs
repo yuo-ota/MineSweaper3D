@@ -17,7 +17,7 @@ public class Attention : MonoBehaviour
 
     public void CheckStatus()
     {
-        if (_homeControllerScript.IsInProgress)
+        if (_homeControllerScript.GameStatus == 1)
         {
             OnEnable();
         }

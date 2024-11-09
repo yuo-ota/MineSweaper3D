@@ -18,17 +18,17 @@ public class GameSettingController : SceneController
     // Start is called before the first frame update
     void Start()
     {
-        MapSize = GameStatus.MapSize;
+        MapSize = GameData.MapSize;
     }
     override
     public void MoveScene(string sceneName)
     {
         GenerateMap();
-        GameStatus.BeforeSceneName = "GameSetting";
-        GameStatus.MapSize = MapSize;
-        GameStatus.StageStatus = StageStatus;
-        GameStatus.Stage = Stage;
-        GameStatus.MapSeed = MapSeed;
+        GameData.BeforeSceneName = "GameSetting";
+        GameData.MapSize = MapSize;
+        GameData.StageStatus = StageStatus;
+        GameData.Stage = Stage;
+        GameData.MapSeed = MapSeed;
         //シーンのロード
         SceneManager.LoadScene(sceneName);
     }

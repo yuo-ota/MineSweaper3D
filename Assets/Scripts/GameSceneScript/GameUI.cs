@@ -19,6 +19,7 @@ public class GameUI : MonoBehaviour
     }
     public void GoToHomeScene()
     {
+        _gameControllerObject.GetComponent<GameController>().GameStatus = 0;
         _gameControllerObject.GetComponent<GameController>().MoveScene("Home");
     }
     public void GoToSettingScene()

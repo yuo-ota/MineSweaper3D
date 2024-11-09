@@ -85,7 +85,6 @@ public class SetGrid : MonoBehaviour
             index[0] = MapSize[0] - (int)(gridPosition.y * MapSize[0] / 700f) - 1;
             index[1] = (int)(gridPosition.x * MapSize[1] / 700f);
             index[2] = ActiveLayer;
-            Debug.Log(index[0] + ", " + index[1] + ", " + index[2]);
             return index;
         }
         return null;
