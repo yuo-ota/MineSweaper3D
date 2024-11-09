@@ -44,7 +44,7 @@ public class GameController : SceneController
         _canMoveOtherPage = true;
         _setCubeObject.GetComponent<SetCube>().SettingPrefub(MapSize, Stage, StageStatus);
         _setGridObject.GetComponent<SetGrid>().SettingPrefub(MapSize, Stage, StageStatus);
-        if (GameStatus == 1 || GameStatus == 2)
+        if (GameStatus == 2 || GameStatus == 3)
         {
             _mouseControllObject.GetComponent<MouseInput>().CanMouseInput = false;
             _setCubeObject.GetComponent<SetCube>().ActiveLayer = -1;

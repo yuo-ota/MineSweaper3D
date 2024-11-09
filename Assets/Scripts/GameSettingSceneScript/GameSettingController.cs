@@ -12,6 +12,11 @@ public class GameSettingController : SceneController
     [SerializeField] private int[] _mapSize;
     [SerializeField] private int[,,] _stage;
     [SerializeField] private int[,,] _stageStatus;
+    [Header("need reset param")]
+    [SerializeField] private int _score;
+    [SerializeField] private int _usedHintNum;
+    [SerializeField] private int _timer;
+    [SerializeField] private int _gameStatus;
     [Header("gameObject")]
     [SerializeField] private GameObject _scaleImageCube;
     [SerializeField] private GameObject _scaleDisplayUI;
@@ -23,7 +28,15 @@ public class GameSettingController : SceneController
     override
     public void MoveScene(string sceneName)
     {
-        GenerateMap();
+        if (sceneName == "Game")
+        {
+            GenerateMap();
+            ResetGame();
+            GameData.Score = Score;
+            GameData.UsedHintNum = UsedHintNum;
+            GameData.Timer = Timer;
+            GameData.GameStatus = GameStatus;
+        }
         GameData.BeforeSceneName = "GameSetting";
         GameData.MapSize = MapSize;
         GameData.StageStatus = StageStatus;
@@ -51,6 +64,26 @@ public class GameSettingController : SceneController
         get { return _stageStatus; }
         set { _stageStatus = value; }
     }
+    public int Score
+    {
+        get { return _score; }
+        set { _score = value; }
+    }
+    public int UsedHintNum
+    {
+        get { return _usedHintNum; }
+        set { _usedHintNum = value; }
+    }
+    public int Timer
+    {
+        get { return _timer; }
+        set { _timer = value; }
+    }
+    public int GameStatus
+    {
+        get { return _gameStatus; }
+        set { _gameStatus = value; }
+    }
     public int MapSeed
     {
         get { return _mapSeed; }
@@ -68,6 +101,13 @@ public class GameSettingController : SceneController
         _stageStatus = new int[MapSize[0], MapSize[1], MapSize[2]];
         GetComponent<MakeMap>().Stage = Stage;
         GetComponent<MakeMap>().GenerateMap(MapSeed, MapSize, StageStatus);
+    }
+    public void ResetGame()
+    {
+        Score = 0;
+        UsedHintNum = 0;
+        Timer = 0;
+        GameStatus = 1;
     }
 }
 

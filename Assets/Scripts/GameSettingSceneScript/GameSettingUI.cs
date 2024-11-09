@@ -22,5 +22,6 @@ public class GameSettingUI : MonoBehaviour
     public void goToGame()
     {
         _gameSettingControllerObject.GetComponent<GameSettingController>().MoveScene("Game");
+        _gameSettingControllerObject.GetComponent<GameSettingController>().ResetGame();
     }
 }
