@@ -10,6 +10,7 @@ public class View2D : MonoBehaviour
     [SerializeField] private int _aroundBombNum;
     [SerializeField] private int _gridStatus;
     [SerializeField] private int[] _index;
+    [SerializeField] private int[] _mapSize;
     [SerializeField] private Sprite _displayFlagImage;
     [SerializeField] private Sprite _nonDisplayFlagImage;
     [SerializeField] private Sprite _digedImage;
@@ -38,7 +39,7 @@ public class View2D : MonoBehaviour
                         transform.GetChild(0).gameObject.SetActive(false);
                         GetComponent<Image>().sprite = _nonDisplayFlagImage;
                         _gridStatus = value;
-                        transform.parent.parent.GetComponent<SetGrid>().ChangeGridStatus(_index, value);
+                        transform.parent.parent.parent.GetComponent<SetGrid>().ChangeGridStatus(Index, value);
 ;                    }
                     break;
                 case 1: //旗の設置/解除
@@ -46,21 +47,20 @@ public class View2D : MonoBehaviour
                     {
                         transform.GetChild(0).gameObject.SetActive(false);
                         _gridStatus = 1;
-                        transform.parent.parent.GetComponent<SetGrid>().ChangeGridStatus(_index, 1);
+                        transform.parent.parent.parent.GetComponent<SetGrid>().ChangeGridStatus(Index, 1);
                         GetComponent<Image>().sprite = _displayFlagImage;
                     }
                     else if (_gridStatus == 1)
                     {
                         transform.GetChild(0).gameObject.SetActive(false);
                         _gridStatus = 0;
-                        transform.parent.parent.GetComponent<SetGrid>().ChangeGridStatus(_index, 0);
+                        transform.parent.parent.parent.GetComponent<SetGrid>().ChangeGridStatus(Index, 0);
                         GetComponent<Image>().sprite = _nonDisplayFlagImage;
                     }
                     break;
-                case 2: //開示済み
+                case 2: //開示処理
                     if (_gridStatus == 0 || _gridStatus == 3)
                     {
-                        _gridStatus = value;
                         if (_aroundBombNum == 27)
                         {
                             GetComponent<Image>().sprite = _bombDridImage;
@@ -69,30 +69,39 @@ public class View2D : MonoBehaviour
                         else if (_aroundBombNum == 0)
                         {
                             GetComponent<Image>().sprite = _digedImage;
-                            transform.parent.parent.GetComponent<SetGrid>().ChangeGridStatus(_index, value);
+                            transform.parent.parent.parent.GetComponent<SetGrid>().ChangeGridStatus(Index, value);
                             _gameControllerObject.GetComponent<GameController>().RemainGridNum--;
+                            AutoOpen();
                         }
                         else
                         {
                             transform.GetChild(0).gameObject.SetActive(true);
                             GetComponent<Image>().sprite = _digedImage;
-                            transform.parent.parent.GetComponent<SetGrid>().ChangeGridStatus(_index, value);
+                            transform.parent.parent.parent.GetComponent<SetGrid>().ChangeGridStatus(Index, value);
                             _gameControllerObject.GetComponent<GameController>().RemainGridNum--;
+                            if (_gridStatus == 3)
+                            {
+                                AutoOpen();
+                            }
                         }
+                        _gridStatus = value;
+                    }
+                    else if (_gridStatus == 2)
+                    {
+                        AutoOpen();
                     }
                     break;
                 case 3: //開示待ち
                     if (_gridStatus == 0)
                     {
-                        transform.GetChild(0).gameObject.SetActive(false);
                         _gridStatus = value;
-                        transform.parent.parent.GetComponent<SetGrid>().ChangeGridStatus(_index, value);
+                        GridStatus = 2;
                     }
                     break;
                 default: //旗の誤設置
                     transform.GetChild(0).gameObject.SetActive(false);
                     _gridStatus = value;
-                    transform.parent.parent.GetComponent<SetGrid>().ChangeGridStatus(_index, value);
+                    transform.parent.parent.parent.GetComponent<SetGrid>().ChangeGridStatus(Index, value);
                     break;
             }
         }
@@ -102,9 +111,28 @@ public class View2D : MonoBehaviour
         get { return _index; }
         set { _index = value; }
     }
+    public int[] MapSize
+    {
+        get { return _mapSize; }
+        set { _mapSize = value; }
+    }
+    public int AroundBombNum
+    {
+        get { return _aroundBombNum; }
+    }
     public GameObject GameControllerObject
     {
         get { return _gameControllerObject; }
         set { _gameControllerObject = value; }
+    }
+    public void AutoOpen()
+    {
+        _gridStatus = 2;
+        if (_aroundBombNum == 0)
+        {
+            transform.parent.parent.parent.GetComponent<SetGrid>().AutoOpen(Index);
+            return;
+        }
+        transform.parent.parent.parent.GetComponent<SetGrid>().SearchBombNum(Index);
     }
 }

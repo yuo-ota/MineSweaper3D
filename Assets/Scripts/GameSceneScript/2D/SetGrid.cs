@@ -10,8 +10,6 @@ public class SetGrid : MonoBehaviour
     [SerializeField] private GameObject _prefubParentObject;
     [SerializeField] private GameObject _3dViewControlObject;
 
-    [SerializeField] private List<GameObject> _parentObjects;
-
     [SerializeField] private Vector3 _prefubPos = new Vector3(0f, 0f, 0f);
 
     [SerializeField] private int _activeLayer;
@@ -22,11 +20,12 @@ public class SetGrid : MonoBehaviour
         MapSize = mapSize;
         for (int i = 0; i < mapSize[2]; i++)
         {
-            GameObject newParentPrefub = Instantiate(_prefubParentObject, new Vector3(0f, 0f, 0f), Quaternion.identity);
-            newParentPrefub.transform.SetParent(transform, false);
-            _parentObjects.Add(newParentPrefub);
+            GameObject newGrandParentPrefub = Instantiate(_prefubParentObject, new Vector3(0f, 0f, 0f), Quaternion.identity);
+            newGrandParentPrefub.transform.SetParent(transform, false);
             for (int j = 0; j < mapSize[1]; j++)
             {
+                GameObject newParentPrefub = Instantiate(_prefubParentObject, new Vector3(0f, 0f, 0f), Quaternion.identity);
+                newParentPrefub.transform.SetParent(newGrandParentPrefub.transform, false);
                 for (int k = mapSize[0] - 1; k >= 0 ; k--)
                 {
                     GameObject newPrefub = Instantiate(_prefubObject, _prefubPos, Quaternion.identity);
@@ -36,6 +35,7 @@ public class SetGrid : MonoBehaviour
                     newPrefub.GetComponent<View2D>().GameControllerObject = GameControllerObject;
                     newPrefub.GetComponent<View2D>().SetText = stage[k, j, i];
                     newPrefub.GetComponent<View2D>().Index = new int[3] { k, j, i };
+                    newPrefub.GetComponent<View2D>().MapSize = MapSize;
                     newPrefub.GetComponent<View2D>().GridStatus = stageStatus[k, j, i];
                     _prefubPos.y += 700f / mapSize[0];
                 }
@@ -58,11 +58,11 @@ public class SetGrid : MonoBehaviour
     public void UpdateActiveLayer()
     {
         _3dViewControlObject.GetComponent<SetCube>().ActiveLayer = ActiveLayer;
-        foreach (GameObject g in _parentObjects)
+        for (int i = 0; i < MapSize[2]; i++)
         {
-            g.SetActive(false);
+            transform.GetChild(i).transform.gameObject.SetActive(false);
         }
-        _parentObjects[_activeLayer].SetActive(true);
+        transform.GetChild(ActiveLayer).transform.gameObject.SetActive(true);
     }
     public int ActiveLayer
     {
@@ -91,19 +91,53 @@ public class SetGrid : MonoBehaviour
     }
     public void ChangeGrid(int[] index, int status)
     {
-        for (int i = 0; i < transform.GetChild(index[2]).childCount; i++)
-        {
-            if (transform.GetChild(index[2]).GetChild(i).GetComponent<View2D>().Index[0] == index[0]
-                && transform.GetChild(index[2]).GetChild(i).GetComponent<View2D>().Index[1] == index[1])
-            {
-                transform.GetChild(index[2]).GetChild(i).GetComponent<View2D>().GridStatus = status;
-            }
-        }
+        transform.GetChild(index[2]).GetChild(index[1]).GetChild(MapSize[0] - index[0] - 1).GetComponent<View2D>().GridStatus = status;
     }
     public void ChangeGridStatus(int[] index, int value)
     {
         int[,,] status = _gameControllerObject.GetComponent<GameController>().StageStatus;
         status[index[0], index[1], index[2]] = value;
         _gameControllerObject.GetComponent<GameController>().StageStatus = status;
+    }
+    public void AutoOpen(int[] index)
+    {
+        for (int i = -1; i <= 1; i++)
+        {
+            if (index[0] + i < 0 || index[0] + i >= MapSize[0]) continue;
+            for (int j = -1; j <= 1; j++)
+            {
+                if (index[1] + j < 0 || index[1] + j >= MapSize[1]) continue;
+                for (int k = -1; k <= 1; k++)
+                {
+                    if (index[2] + k < 0 || index[2] + k >= MapSize[2]) continue;
+                    _3dViewControlObject.GetComponent<SetCube>().ChangeCube(index[0] + i, index[1] + j, index[2] + k, 2);
+                    transform.GetChild(index[2] + k).GetChild(index[1] + j).GetChild(MapSize[0] - (index[0] + i) - 1).GetComponent<View2D>().GridStatus = 3;
+                }
+            }
+        }
+    }
+    public void SearchBombNum(int[] index)
+    {
+        int flagNum = 0;
+        for (int i = -1; i <= 1; i++)
+        {
+            if (index[0] + i < 0 || index[0] + i >= MapSize[0]) continue;
+            for (int j = -1; j <= 1; j++)
+            {
+                if (index[1] + j < 0 || index[1] + j >= MapSize[1]) continue;
+                for (int k = -1; k <= 1; k++)
+                {
+                    if (index[2] + k < 0 || index[2] + k >= MapSize[2]) continue;
+                    if (transform.GetChild(index[2] + k).GetChild(index[1] + j).GetChild(MapSize[0] - (index[0] + i) - 1).GetComponent<View2D>().GridStatus == 1)
+                    {
+                        flagNum++;
+                    }
+                }
+            }
+        }
+        if (flagNum >= transform.GetChild(index[2]).GetChild(index[1]).GetChild(MapSize[0] - index[0] - 1).GetComponent<View2D>().AroundBombNum)
+        {
+            AutoOpen(index);
+        }
     }
 }

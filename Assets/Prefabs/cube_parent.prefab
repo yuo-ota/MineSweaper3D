@@ -10,7 +10,7 @@ GameObject:
   m_Component:
   - component: {fileID: 8474793332692879094}
   m_Layer: 0
-  m_Name: grid_parent
+  m_Name: cube_parent
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
