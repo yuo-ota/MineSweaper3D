@@ -38,6 +38,7 @@ public class SetCube : MonoBehaviour
                     newPrefub.transform.GetChild(2).GetComponent<View3D>().SetText = stage[i, j, k];
                     newPrefub.transform.GetChild(2).GetComponent<View3D>().Index = new int[3] { i, j, k };
                     newPrefub.transform.GetChild(2).GetComponent<View3D>().CubeStatus = stageStatus[i, j, k];
+                    _averagePos += _prefubPos;
                     _cubeObjects.Add(newPrefub);
                     _prefubPos.y += 2f;
                 }
@@ -47,8 +48,9 @@ public class SetCube : MonoBehaviour
             _prefubPos.z = 0f;
             _prefubPos.x += 2f;
         }
-        _averagePos = new Vector3(mapSize[0] - 1f, mapSize[1] - 1f, mapSize[2] -1f);
+        _averagePos /= (mapSize[0] * mapSize[1] * mapSize[2]);
         _camObject.GetComponent<CameraControl>().Anker = _averagePos;
+        _camObject.GetComponent<CameraControl>().ChangePosition();
     }
     public void ExpandPosition(float f)
     {

@@ -1486,8 +1486,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 84e32218bea399f45a23234fd8aeab4d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _thetaX: 0
-  _thetaY: 0
+  _thetaX: 45
+  _thetaY: 45
   _length: 20
   _anker: {x: 0, y: 0, z: 0}
 --- !u!81 &476667668
@@ -3264,7 +3264,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 44dadd4262071564bae9425f69154670, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _gameControllerObject: {fileID: 1607080516}
   _2dViewControlObject: {fileID: 1394571763}
   _3dViewControlObject: {fileID: 476667666}
   _gridControlObject: {fileID: 1394571763}
@@ -5825,7 +5824,7 @@ Transform:
   m_GameObject: {fileID: 1766017329}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0.6984289, y: 1.191983, z: 0.23064983}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
