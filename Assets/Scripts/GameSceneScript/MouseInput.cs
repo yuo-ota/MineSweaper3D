@@ -18,9 +18,9 @@ public class MouseInput : MonoBehaviour
     void Update()
     {
         //マウス左ボタン
-        //マウスがどの位置で押されたかで2d, 3dを切り替える。
         if (Input.GetMouseButtonDown(0))
         {
+            //マウスがどの位置で押されたかで2d, 3dを切り替える。
             _pushLeftButtonPrePosition = Input.mousePosition;
             if (Input.mousePosition.x > 960) //y軸の制限を後々いれる。
             {
@@ -49,9 +49,9 @@ public class MouseInput : MonoBehaviour
         }
 
         //マウス右ボタン
-        //マウスがどの位置で押されたかで2d, 3dを切り替える。
         if (Input.GetMouseButtonDown(1))
         {
+            //マウスがどの位置で押されたかで2d, 3dを切り替える。
             _pushRightButtonPrePosition = Input.mousePosition;
             if (Input.mousePosition.x > 960) //y軸の制限を後々いれる。
             {

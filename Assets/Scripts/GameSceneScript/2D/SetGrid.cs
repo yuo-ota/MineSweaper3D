@@ -79,13 +79,13 @@ public class SetGrid : MonoBehaviour
     {
         Vector3 pivot = transform.position + transform.parent.position;
         Vector2 gridPosition = new Vector2(x - pivot.x, y - pivot.y);
-        //Debug.Log(gridPosition);
         int[] index = new int[3];
         if (gridPosition.x >= 0 && gridPosition.x < 700 && gridPosition.y >= 0 && gridPosition.y <= 700)
         {
-            index[0] = MapSize[1] - (int)(gridPosition.y * MapSize[1] / 700f) - 1;
-            index[1] = (int)(gridPosition.x * MapSize[0] / 700f);
+            index[0] = MapSize[0] - (int)(gridPosition.y * MapSize[0] / 700f) - 1;
+            index[1] = (int)(gridPosition.x * MapSize[1] / 700f);
             index[2] = ActiveLayer;
+            Debug.Log(index[0] + ", " + index[1] + ", " + index[2]);
             return index;
         }
         return null;
