@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 705507994}
-  m_IndirectSpecularColor: {r: 0, g: 0, b: 0, a: 1}
+  m_IndirectSpecularColor: {r: 0.44657898, g: 0.4964133, b: 0.5748178, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -1698,7 +1698,7 @@ RectTransform:
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
   m_AnchoredPosition: {x: -14.64, y: -75.6}
-  m_SizeDelta: {x: 348, y: 50}
+  m_SizeDelta: {x: 500, y: 50}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!1 &555210262
 GameObject:
@@ -5364,6 +5364,8 @@ MonoBehaviour:
   _canMoveOtherPage: 0
   _gameStatus: 0
   _isGameSetting: 1
+  random:
+    state: 0
   _isEmphasize3Dview: 0
   _isExpand3Dview: 0
   _gameUIObject: {fileID: 971103817}

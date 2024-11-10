@@ -46,11 +46,19 @@ public class View2D : MonoBehaviour
                     if (_gridStatus == 0)
                     {
                         transform.GetChild(0).gameObject.SetActive(false);
-                        _gridStatus = 1;
-                        transform.parent.parent.parent.GetComponent<SetGrid>().ChangeGridStatus(Index, 1);
                         GetComponent<Image>().sprite = _displayFlagImage;
+                        if (_aroundBombNum != 27)
+                        {
+                            transform.parent.parent.parent.GetComponent<SetGrid>().ChangeGridStatus(Index, 4);
+                            _gridStatus = 4;
+                        }
+                        else
+                        {
+                            transform.parent.parent.parent.GetComponent<SetGrid>().ChangeGridStatus(Index, 1);
+                            _gridStatus = 1;
+                        }
                     }
-                    else if (_gridStatus == 1)
+                    else if (_gridStatus == 1 || _gridStatus == 4)
                     {
                         transform.GetChild(0).gameObject.SetActive(false);
                         _gridStatus = 0;
@@ -102,9 +110,6 @@ public class View2D : MonoBehaviour
                     }
                     break;
                 default: //ä¯ÇÃåÎê›íu
-                    transform.GetChild(0).gameObject.SetActive(false);
-                    _gridStatus = value;
-                    transform.parent.parent.parent.GetComponent<SetGrid>().ChangeGridStatus(Index, value);
                     break;
             }
         }

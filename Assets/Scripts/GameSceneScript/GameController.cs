@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEditor;
+using Random = Unity.Mathematics.Random;
 using UnityEngine.SceneManagement;
 using TMPro;
 
@@ -20,6 +21,7 @@ public class GameController : SceneController
     [SerializeField] private bool _canMoveOtherPage;
     [SerializeField] private int _gameStatus;   //0:プレイしていない 1:プレイ中 2:失敗 3:クリア
     [SerializeField] private bool _isGameSetting = true;
+    [SerializeField] private Random random;
     private float _milisec;
     [SerializeField] private bool _isEmphasize3Dview;
     [SerializeField] private bool _isExpand3Dview;
@@ -35,6 +37,7 @@ public class GameController : SceneController
     [SerializeField] private TextMeshProUGUI _displayScore;
     void Start()
     {
+        random = new Random((uint)System.DateTime.Now.Ticks);
         BombNum = GameData.BombNum;
         MapSize = GameData.MapSize;
         DiggedGridNum = GameData.DiggedGridNum;
@@ -173,6 +176,47 @@ public class GameController : SceneController
         if (_isGameSetting) return;
         _scoreObject.GetComponent<OperateScoreDetails>().UseHint();
         UsedHintNum++;
+
+        List<int[]> missFlagGridIndex = new List<int[]>();
+        List<int[]> inactiveGridIndex = new List<int[]>();
+
+        for (int i = 0; i < MapSize[0]; i++)
+        {
+            for (int j = 0; j < MapSize[1]; j++)
+            {
+                for (int k = 0; k < MapSize[2]; k++)
+                {
+                    if (StageStatus[i, j, k] == 4)
+                    {
+                        missFlagGridIndex.Add(new int[3]{ i, j, k });
+                    }
+                    else if (StageStatus[i, j, k] == 0)
+                    {
+                        inactiveGridIndex.Add(new int[3] { i, j, k });
+                    }
+                }
+            }
+        }
+        int[] pickedIndex;
+        if (missFlagGridIndex.Count > 0)
+        {
+            pickedIndex = missFlagGridIndex[random.NextInt(0, missFlagGridIndex.Count)];
+            _setGridObject.transform.GetChild(pickedIndex[2]).GetChild(pickedIndex[1]).GetChild(MapSize[0] - pickedIndex[0] - 1).GetComponent<View2D>().GridStatus = 1;
+            _setCubeObject.transform.GetChild(pickedIndex[2]).GetChild(pickedIndex[1]).GetChild(pickedIndex[0]).GetChild(2).GetComponent<View3D>().CubeStatus = 1;
+            return;
+        }
+        pickedIndex = inactiveGridIndex[random.NextInt(0, inactiveGridIndex.Count)];
+        if (_setGridObject.transform.GetChild(pickedIndex[2]).GetChild(pickedIndex[1]).GetChild(MapSize[0] - pickedIndex[0] - 1).GetComponent<View2D>().AroundBombNum == 27)
+        {
+            _setGridObject.transform.GetChild(pickedIndex[2]).GetChild(pickedIndex[1]).GetChild(MapSize[0] - pickedIndex[0] - 1).GetComponent<View2D>().GridStatus = 1;
+            _setCubeObject.transform.GetChild(pickedIndex[2]).GetChild(pickedIndex[1]).GetChild(pickedIndex[0]).GetChild(2).GetComponent<View3D>().CubeStatus = 1;
+        }
+        else
+        {
+            _setGridObject.transform.GetChild(pickedIndex[2]).GetChild(pickedIndex[1]).GetChild(MapSize[0] - pickedIndex[0] - 1).GetComponent<View2D>().GridStatus = 2;
+            _setCubeObject.transform.GetChild(pickedIndex[2]).GetChild(pickedIndex[1]).GetChild(pickedIndex[0]).GetChild(2).GetComponent<View3D>().CubeStatus = 2;
+        }
+
     }
     public void DiggedGrid()
     {
