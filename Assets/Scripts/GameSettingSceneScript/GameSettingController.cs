@@ -2,16 +2,18 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using System;
+using Random = Unity.Mathematics.Random;
 using UnityEditor;
 using UnityEngine.SceneManagement;
 
 public class GameSettingController : SceneController
 {
     [Header("data")]
-    [SerializeField] private int _mapSeed = 0;
+    [SerializeField] private int _mapSeed;
     [SerializeField] private int[] _mapSize;
     [SerializeField] private int[,,] _stage;
     [SerializeField] private int[,,] _stageStatus;
+    [SerializeField] private Random random;
     [Header("need reset param")]
     [SerializeField] private int _score;
     [SerializeField] private int _usedHintNum;
@@ -23,6 +25,8 @@ public class GameSettingController : SceneController
     // Start is called before the first frame update
     void Start()
     {
+        random = new Random((uint)System.DateTime.Now.Ticks);
+        MapSeed = GameData.MapSeed;
         MapSize = GameData.MapSize;
     }
     override
@@ -37,11 +41,11 @@ public class GameSettingController : SceneController
             GameData.Timer = Timer;
             GameData.GameStatus = GameStatus;
         }
+        GameData.MapSeed = MapSeed;
         GameData.BeforeSceneName = "GameSetting";
         GameData.MapSize = MapSize;
         GameData.StageStatus = StageStatus;
         GameData.Stage = Stage;
-        GameData.MapSeed = MapSeed;
         //シーンのロード
         SceneManager.LoadScene(sceneName);
     }
@@ -87,7 +91,12 @@ public class GameSettingController : SceneController
     public int MapSeed
     {
         get { return _mapSeed; }
-        set { _mapSeed = value; }
+        set { 
+            if (MapSeed == 0)
+            {
+                _mapSeed = value;
+            }
+        }
     }
     //スケールが変更した際に変更を行うリスト
     public void UpdateScale()
@@ -97,6 +106,7 @@ public class GameSettingController : SceneController
     }
     public void GenerateMap()
     {
+        MapSeed = random.NextInt();
         _stage = new int[MapSize[0], MapSize[1], MapSize[2]];
         _stageStatus = new int[MapSize[0], MapSize[1], MapSize[2]];
         GetComponent<MakeMap>().Stage = Stage;

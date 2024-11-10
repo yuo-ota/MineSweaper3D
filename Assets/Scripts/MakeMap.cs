@@ -10,6 +10,7 @@ public class MakeMap : MonoBehaviour
     [SerializeField] private int[,,] _stageStatus;
     public void GenerateMap(int mapSeed, int[] mapSize, int[,,] stageStatus)
     {
+        Debug.Log(mapSeed);
         int bomb = 0;
         _mapSeed = mapSeed;
         MapSize = mapSize;
