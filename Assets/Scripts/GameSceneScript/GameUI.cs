@@ -37,6 +37,7 @@ public class GameUI : MonoBehaviour
     public void UseHint()
     {
         _gameControllerObject.GetComponent<GameController>().UseHint();
+
     }
     public void MoveResult()
     {

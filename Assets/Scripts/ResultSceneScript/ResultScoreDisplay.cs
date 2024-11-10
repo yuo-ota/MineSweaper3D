@@ -10,7 +10,7 @@ public class ResultScoreDisplay : MonoBehaviour
     [SerializeField] private int _timerMaxNum = 10000;
     [SerializeField] private int _timerScoreRate = 100;
     [SerializeField] private int _clearBonusNum = 1000;
-    [SerializeField] private int _totalScore = 0;
+    [SerializeField] private int _totalScore;
     [SerializeField] private GameObject _resultControllerObject;
     [SerializeField] private GameObject[] _displayElementObject;
     [SerializeField] private TextMeshProUGUI _scoreBodyTextObject;
@@ -19,6 +19,7 @@ public class ResultScoreDisplay : MonoBehaviour
 
     public void UpdateScore(int diggedGridNum, int usedHintNum, int timer, bool isCleared)
     {
+        _totalScore = 0;
         int elementNum = 0;
         if (diggedGridNum != 0)
         {

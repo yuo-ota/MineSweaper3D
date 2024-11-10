@@ -130,7 +130,9 @@ public class GameController : SceneController
     }
     public int Score
     {
-        get { return _score; }
+        get {
+            return _score;
+        }
         set 
         {
             _score = value;

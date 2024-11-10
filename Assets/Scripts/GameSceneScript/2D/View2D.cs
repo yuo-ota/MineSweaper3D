@@ -69,7 +69,6 @@ public class View2D : MonoBehaviour
                         else if (_aroundBombNum == 0)
                         {
                             GetComponent<Image>().sprite = _digedImage;
-                            transform.parent.parent.parent.GetComponent<SetGrid>().ChangeGridStatus(Index, value);
                             _gameControllerObject.GetComponent<GameController>().DiggedGrid();
                             if (!_gameControllerObject.GetComponent<GameController>().IsGameSetting)
                             {
@@ -88,6 +87,7 @@ public class View2D : MonoBehaviour
                             }
                         }
                         _gridStatus = value;
+                        transform.parent.parent.parent.GetComponent<SetGrid>().ChangeGridStatus(Index, value);
                     }
                     else if (_gridStatus == 2 && !_gameControllerObject.GetComponent<GameController>().IsGameSetting)
                     {
