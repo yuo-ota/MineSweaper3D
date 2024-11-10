@@ -9,7 +9,9 @@ public class GameController : SceneController
 {
     [Header("data")]
     [SerializeField] private int[] _mapSize;
+    [SerializeField] private int _diggedGridNum;
     [SerializeField] private int _usedHintNum;
+    [SerializeField] private int _bombNum;
     [SerializeField] private int _timer;
     [SerializeField] private int _score;
     [SerializeField] private int[,,] _stage;
@@ -17,6 +19,7 @@ public class GameController : SceneController
     [SerializeField] private int _remainGridNum;
     [SerializeField] private bool _canMoveOtherPage;
     [SerializeField] private int _gameStatus;   //0:プレイしていない 1:プレイ中 2:失敗 3:クリア
+    [SerializeField] private bool _isGameSetting = true;
     private float _milisec;
     [SerializeField] private bool _isEmphasize3Dview;
     [SerializeField] private bool _isExpand3Dview;
@@ -27,29 +30,32 @@ public class GameController : SceneController
     [SerializeField] private GameObject _setCubeObject;
     [SerializeField] private GameObject _setGridObject;
     [SerializeField] private GameObject _mouseControllObject;
+    [SerializeField] private GameObject _resultScoreDisplayObject;
     [Header("textObject")]
     [SerializeField] private TextMeshProUGUI _displayScore;
     void Start()
     {
+        BombNum = GameData.BombNum;
         MapSize = GameData.MapSize;
+        DiggedGridNum = GameData.DiggedGridNum;
         UsedHintNum = GameData.UsedHintNum;
         Timer = GameData.Timer;
         Score = GameData.Score;
         Stage = GameData.Stage;
         StageStatus = GameData.StageStatus;
         GameStatus = GameData.GameStatus;
-        RemainGridNum = MapSize[0] * MapSize[1] * MapSize[2] - GameData.BombNum;
-        IsEmphasize3Dview = false;
-        IsExpand3Dview = false;
         _canMoveOtherPage = true;
         _setCubeObject.GetComponent<SetCube>().SettingPrefub(MapSize, Stage, StageStatus);
         _setGridObject.GetComponent<SetGrid>().SettingPrefub(MapSize, Stage, StageStatus);
-        if (GameStatus == 2 || GameStatus == 3)
+        if (GameStatus == 2)
         {
-            _mouseControllObject.GetComponent<MouseInput>().CanMouseInput = false;
-            _setCubeObject.GetComponent<SetCube>().ActiveLayer = -1;
-            _gameUIObject.GetComponent<GameUI>().MoveResult();
+            DefeatGame();
         }
+        if (GameStatus == 3)
+        {
+            ClearGame();
+        }
+        _isGameSetting = false;
     }
     private void Update()
     {
@@ -69,6 +75,7 @@ public class GameController : SceneController
         }
         GameData.BeforeSceneName = "Game";
         GameData.UsedHintNum = UsedHintNum;
+        GameData.DiggedGridNum = DiggedGridNum;
         GameData.Timer = Timer;
         GameData.Score = Score;
         GameData.Stage = Stage;
@@ -76,23 +83,34 @@ public class GameController : SceneController
         //シーンのロード
         SceneManager.LoadScene(sceneName);
     }
-    public int RemainGridNum
+    public bool IsGameSetting
     {
-        get { return _remainGridNum; }
-        set
-        {
-            _remainGridNum = value;
-            if (_remainGridNum == 0)
-            {
-                ClearGame();
-            }
-        }
+        get { return _isGameSetting; }
+        set { _isGameSetting = value; }
     }
     public int[] MapSize
     {
         get { return _mapSize; }
         set { _mapSize = value; }
     }
+    public int BombNum
+    {
+        get { return _bombNum; }
+        set { _bombNum = value; }
+    }
+    public int DiggedGridNum
+    {
+        get { return _diggedGridNum; }
+        set
+        {
+            _diggedGridNum = value;
+            if (BombNum == MapSize[0] * MapSize[1] * MapSize[2] - DiggedGridNum)
+            {
+                ClearGame();
+            }
+        }
+    }
+
     public int UsedHintNum
     {
         get { return _usedHintNum; }
@@ -150,8 +168,15 @@ public class GameController : SceneController
     }
     public void UseHint()
     {
-        UsedHintNum++;
+        if (_isGameSetting) return;
         _scoreObject.GetComponent<OperateScoreDetails>().UseHint();
+        UsedHintNum++;
+    }
+    public void DiggedGrid()
+    {
+        if (_isGameSetting) return;
+        _scoreObject.GetComponent<OperateScoreDetails>().DigAGrid();
+        DiggedGridNum++;
     }
     public void UpdateScore()
     {
@@ -170,9 +195,10 @@ public class GameController : SceneController
         Debug.Log("clear");
         _mouseControllObject.GetComponent<MouseInput>().CanMouseInput = false;
         _canMoveOtherPage = false;
-        _gameStatus = 3;
+        GameStatus = 3;
         _gameUIObject.GetComponent<GameUI>().MoveResult();
         _setCubeObject.GetComponent<SetCube>().ActiveLayer = -1;
+        _resultScoreDisplayObject.GetComponent<ResultScoreDisplay>().UpdateScore(DiggedGridNum, UsedHintNum, Timer, true);
         Invoke("CanMoveOtherPageTrue", 3f);
     }
     public void DefeatGame()
@@ -180,9 +206,10 @@ public class GameController : SceneController
         Debug.Log("Defeat");
         _mouseControllObject.GetComponent<MouseInput>().CanMouseInput = false;
         _canMoveOtherPage = false;
-        _gameStatus = 2;
+        GameStatus = 2;
         _gameUIObject.GetComponent<GameUI>().MoveResult();
         _setCubeObject.GetComponent<SetCube>().ActiveLayer = -1;
+        _resultScoreDisplayObject.GetComponent<ResultScoreDisplay>().UpdateScore(DiggedGridNum, UsedHintNum, Timer, false);
         _setCubeObject.GetComponent<SetCube>().OpenCubes();
         Invoke("CanMoveOtherPageTrue", 3f);
     }

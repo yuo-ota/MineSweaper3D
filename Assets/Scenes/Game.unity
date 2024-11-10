@@ -721,7 +721,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _diggedScoreRate: 100
-  _usedHintScoreRate: 100
+  _usedHintScoreRate: 200
   _timerMaxNum: 10000
   _timerScoreRate: 100
   _clearBonusNum: 1000
@@ -5355,12 +5355,15 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _mapSize: 
+  _diggedGridNum: 0
   _usedHintNum: 0
+  _bombNum: 0
   _timer: 0
   _score: 0
   _remainGridNum: 0
   _canMoveOtherPage: 0
   _gameStatus: 0
+  _isGameSetting: 1
   _isEmphasize3Dview: 0
   _isExpand3Dview: 0
   _gameUIObject: {fileID: 971103817}
@@ -5369,6 +5372,7 @@ MonoBehaviour:
   _setCubeObject: {fileID: 1766017329}
   _setGridObject: {fileID: 1394571763}
   _mouseControllObject: {fileID: 971103817}
+  _resultScoreDisplayObject: {fileID: 81746157}
   _displayScore: {fileID: 1874969059}
 --- !u!1 &1640170268
 GameObject:
@@ -5551,8 +5555,8 @@ MonoBehaviour:
   _gameControllerObject: {fileID: 1607080516}
   _gameObjectList: []
   _prefubObject: {fileID: 7777505596129046664, guid: 7a16be17cc7c5d74686ec14bb63f70f4, type: 3}
-  _scoreOfDig: 10
-  _scoreOfHint: 20
+  _scoreOfDig: 100
+  _scoreOfHint: 200
 --- !u!1 &1694341283
 GameObject:
   m_ObjectHideFlags: 0
@@ -5845,7 +5849,6 @@ MonoBehaviour:
   _prefubObject: {fileID: 2460590822934642551, guid: d77f6ccca7821a84b8006026c9005708, type: 3}
   _prefubParentObject: {fileID: 666179278203068800, guid: 6d668abcaf5c48748918f587ae8fe6ab, type: 3}
   _camObject: {fileID: 476667666}
-  _cubeObjects: []
   _nonActiveLayerMaterial: {fileID: 2100000, guid: eccef49c7a806ac4e9c38613b86eb5ac, type: 2}
   _activeLayerMaterial: {fileID: 2100000, guid: 10e659ea373df094392161c32f7fe672, type: 2}
   _displayFlagMaterial: {fileID: 2100000, guid: 3dd96536aba16074d819fe366c941812, type: 2}
@@ -5855,6 +5858,7 @@ MonoBehaviour:
   _missFlagMaterial: {fileID: 2100000, guid: 3c51b3fb159a903439107ea13197e3b4, type: 2}
   _isExpand: 1
   _activeLayer: 0
+  _mapSize: 
   _prefubPos: {x: 0, y: 0, z: 0}
   _averagePos: {x: 0, y: 0, z: 0}
 --- !u!1 &1771157143

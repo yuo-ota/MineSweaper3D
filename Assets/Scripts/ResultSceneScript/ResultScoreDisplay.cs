@@ -6,7 +6,7 @@ using TMPro;
 public class ResultScoreDisplay : MonoBehaviour
 {
     [SerializeField] private int _diggedScoreRate = 100;
-    [SerializeField] private int _usedHintScoreRate = 100;
+    [SerializeField] private int _usedHintScoreRate = 200;
     [SerializeField] private int _timerMaxNum = 10000;
     [SerializeField] private int _timerScoreRate = 100;
     [SerializeField] private int _clearBonusNum = 1000;

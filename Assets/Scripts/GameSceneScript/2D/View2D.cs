@@ -70,23 +70,26 @@ public class View2D : MonoBehaviour
                         {
                             GetComponent<Image>().sprite = _digedImage;
                             transform.parent.parent.parent.GetComponent<SetGrid>().ChangeGridStatus(Index, value);
-                            _gameControllerObject.GetComponent<GameController>().RemainGridNum--;
-                            AutoOpen();
+                            _gameControllerObject.GetComponent<GameController>().DiggedGrid();
+                            if (!_gameControllerObject.GetComponent<GameController>().IsGameSetting)
+                            {
+                                AutoOpen();
+                            }
                         }
                         else
                         {
                             transform.GetChild(0).gameObject.SetActive(true);
                             GetComponent<Image>().sprite = _digedImage;
                             transform.parent.parent.parent.GetComponent<SetGrid>().ChangeGridStatus(Index, value);
-                            _gameControllerObject.GetComponent<GameController>().RemainGridNum--;
-                            if (_gridStatus == 3)
+                            _gameControllerObject.GetComponent<GameController>().DiggedGrid();
+                            if (_gridStatus == 3 && !_gameControllerObject.GetComponent<GameController>().IsGameSetting)
                             {
                                 AutoOpen();
                             }
                         }
                         _gridStatus = value;
                     }
-                    else if (_gridStatus == 2)
+                    else if (_gridStatus == 2 && !_gameControllerObject.GetComponent<GameController>().IsGameSetting)
                     {
                         AutoOpen();
                     }

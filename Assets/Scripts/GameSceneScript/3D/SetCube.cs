@@ -99,13 +99,12 @@ public class SetCube : MonoBehaviour
     }
     public int[] MapSize
     {
-        get { 
-            return _mapSize;
-        }
+        get { return _mapSize; }
         set { _mapSize = value; }
     }
     public void UpdateActiveLayer(int activeLayerNum)
     {
+        if (MapSize == null) return;
         for (int i = 0; i < MapSize[2]; i++)
         {
             if (i == activeLayerNum)

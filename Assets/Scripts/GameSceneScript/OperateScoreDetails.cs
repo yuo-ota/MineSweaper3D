@@ -7,14 +7,14 @@ public class OperateScoreDetails : MonoBehaviour
     [SerializeField] private GameObject _gameControllerObject;
     [SerializeField] private List<GameObject> _gameObjectList = new List<GameObject>();
     [SerializeField] private GameObject _prefubObject;
-    [SerializeField] private int _scoreOfDig = 10;
-    [SerializeField] private int _scoreOfHint = 20;
+    [SerializeField] private int _scoreOfDig = 100;
+    [SerializeField] private int _scoreOfHint = 200;
 
     private Vector3 _prefubPos = new Vector3(0f, 0f, 0f);
     public void DigAGrid()
     {
         SettingPrefub("+" + _scoreOfDig, "dig the grid");
-        _gameControllerObject.GetComponent<GameController>().Score = _scoreOfDig;
+        _gameControllerObject.GetComponent<GameController>().Score += _scoreOfDig;
     }
     public void UseHint()
     {
