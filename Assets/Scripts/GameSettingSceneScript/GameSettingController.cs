@@ -106,7 +106,7 @@ public class GameSettingController : SceneController
     }
     public void GenerateMap()
     {
-        MapSeed = random.NextInt();
+        MapSeed = random.NextInt(4096) % 4096;
         _stage = new int[MapSize[0], MapSize[1], MapSize[2]];
         _stageStatus = new int[MapSize[0], MapSize[1], MapSize[2]];
         GetComponent<MakeMap>().Stage = Stage;

@@ -63,7 +63,9 @@ public class GameData : MonoBehaviour
     public static int Timer
     {
         get { return _timer; }
-        set { _timer = value; }
+        set { 
+            _timer = value;
+        }
     }
     public static bool IsEnglish
     {

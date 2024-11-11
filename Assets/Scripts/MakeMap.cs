@@ -8,9 +8,11 @@ public class MakeMap : MonoBehaviour
     [SerializeField] private int _mapSeed;
     [SerializeField] private int[,,] _stage;
     [SerializeField] private int[,,] _stageStatus;
+    [SerializeField] public static int generateTime = 0;
     public void GenerateMap(int mapSeed, int[] mapSize, int[,,] stageStatus)
     {
-        Debug.Log(mapSeed);
+        mapSeed = (mapSeed + generateTime) % 4096;
+        generateTime++;
         int bomb = 0;
         _mapSeed = mapSeed;
         MapSize = mapSize;

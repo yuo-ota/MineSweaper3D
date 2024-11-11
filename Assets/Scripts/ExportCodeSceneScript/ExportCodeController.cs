@@ -15,6 +15,7 @@ public class ExportCodeController : SceneController
     [SerializeField] private int _usedHintNum;
     [SerializeField] private int _timer;
     [SerializeField] private int _score;
+    [SerializeField] private int _gameStatus;
     [Header("")]
     [SerializeField] private int _selectOption;
     [Header("gameObject")]
@@ -31,6 +32,7 @@ public class ExportCodeController : SceneController
         UsedHintNum = GameData.UsedHintNum;
         Timer = GameData.Timer;
         Score = GameData.Score;
+        GameStatus = GameData.GameStatus;
     }
     override
     public void MoveScene(string sceneName)
@@ -39,9 +41,9 @@ public class ExportCodeController : SceneController
         //シーンのロード
         SceneManager.LoadScene(sceneName);
     }
-    public void UpdateCodeText()
+    public void UpdateCodeText(string exportCode)
     {
-        _ExportCodeUIObject.GetComponent<ExportCodeUI>().ExportCode = "aaaa";   //ここでコードを生成する。
+        _ExportCodeUIObject.GetComponent<ExportCodeUI>().ExportCode = exportCode;   //ここでコードを生成する。
     }
     public int SelectOption
     {
@@ -98,6 +100,11 @@ public class ExportCodeController : SceneController
     {
         get { return _score; }
         set { _score = value; }
+    }
+    public int GameStatus
+    {
+        get { return _gameStatus; }
+        set { _gameStatus = value; }
     }
     public void UpdateOption()
     {

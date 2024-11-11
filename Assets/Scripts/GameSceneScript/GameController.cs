@@ -79,7 +79,6 @@ public class GameController : SceneController
         GameData.BeforeSceneName = "Game";
         GameData.UsedHintNum = UsedHintNum;
         GameData.DiggedGridNum = DiggedGridNum;
-        GameData.Timer = Timer;
         GameData.Score = Score;
         GameData.Stage = Stage;
         GameData.GameStatus = GameStatus;
@@ -239,6 +238,7 @@ public class GameController : SceneController
     public void ClearGame()
     {
         Debug.Log("clear");
+        GameData.Timer = Timer;
         _mouseControllObject.GetComponent<MouseInput>().CanMouseInput = false;
         _canMoveOtherPage = false;
         GameStatus = 3;
@@ -250,6 +250,7 @@ public class GameController : SceneController
     public void DefeatGame()
     {
         Debug.Log("Defeat");
+        GameData.Timer = Timer;
         _mouseControllObject.GetComponent<MouseInput>().CanMouseInput = false;
         _canMoveOtherPage = false;
         GameStatus = 2;
