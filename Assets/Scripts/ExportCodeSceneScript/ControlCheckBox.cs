@@ -174,6 +174,7 @@ public class ControlCheckBox : MonoBehaviour
         {
             result += ConvertAlphabet(number);
         }
+        result = RLE(result);
         result += useHintNum.ToString("X") + 'g';
 
         return result;
@@ -203,5 +204,39 @@ public class ControlCheckBox : MonoBehaviour
     public char ConvertAlphabet(int i)
     {
         return (char)('A' + i);
+    }
+    public string RLE(string s)
+    {
+        string result = "";
+        int pivot = 0;
+
+        char[] inputString = s.ToCharArray();
+
+        while (true)
+        {
+            if (inputString.Length == pivot) return result;
+
+            char activeChar = inputString[pivot];
+            int count = 1;
+
+            while (true)
+            {
+                if (inputString.Length == pivot + 1 || inputString[pivot + 1] != activeChar)
+                {
+                    if (count >= 2)
+                    {
+                        result += count;
+                    }
+                    result += activeChar;
+                    pivot++;
+                    break;
+                }
+                if (inputString[pivot + 1] == activeChar)
+                {
+                    pivot++;
+                    count++;
+                }
+            }
+        }
     }
 }
