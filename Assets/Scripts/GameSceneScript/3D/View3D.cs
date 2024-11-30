@@ -96,6 +96,12 @@ public class View3D : MonoBehaviour
                     }
                     break;
                 default: //旗の誤設置
+                    if (_cubeStatus == 0)
+                    {
+                        transform.GetChild(0).gameObject.SetActive(false);
+                        transform.parent.GetChild(1).GetComponent<MeshRenderer>().material = transform.parent.parent.parent.parent.GetComponent<SetCube>().DisplayFlagMaterial;
+                        _cubeStatus = 4;
+                    }
                     break;
             }
         }
@@ -110,8 +116,16 @@ public class View3D : MonoBehaviour
         if (_aroundBombNum == 27 && CubeStatus != 1)
         {
             transform.parent.GetChild(1).GetComponent<MeshRenderer>().material = transform.parent.parent.parent.parent.GetComponent<SetCube>().DisplayBombMaterial;
+            transform.GetChild(0).gameObject.SetActive(false);
         }
         else if (CubeStatus == 4)
+        {
+            transform.parent.GetChild(1).GetComponent<MeshRenderer>().material = transform.parent.parent.parent.parent.GetComponent<SetCube>().MissFlagMaterial;
+            transform.GetChild(0).gameObject.SetActive(true);
+        }
+
+        // ExportCode経由の場合旗の誤設置が読み取れない問題を個別に対処する形
+        if (_aroundBombNum != 27 && CubeStatus == 1)
         {
             transform.parent.GetChild(1).GetComponent<MeshRenderer>().material = transform.parent.parent.parent.parent.GetComponent<SetCube>().MissFlagMaterial;
             transform.GetChild(0).gameObject.SetActive(true);
