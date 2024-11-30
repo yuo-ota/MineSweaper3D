@@ -37,8 +37,8 @@ public class GameSettingController : SceneController
     {
         if (sceneName == "Game")
         {
-            GenerateMap();
             ResetGame();
+            GenerateMap();
             GameData.Score = Score;
             GameData.UsedHintNum = UsedHintNum;
             GameData.Timer = Timer;

@@ -115,6 +115,7 @@ public class MakeMap : MonoBehaviour
         GameData.BombNum = bomb;
         GetComponent<GameSettingController>().Stage = Stage;
         GetComponent<GameSettingController>().StageStatus = StageStatus;
+        GetComponent<GameSettingController>().MapSeed = MapSeed;
     }
     public int[] MapSize
     {

@@ -52,6 +52,7 @@ public class ControlInputField : MonoBehaviour
             StageStatus = progressData;
             // usedHintNum‚ÌŠm”F
             int usedHintNum = tupleData.usedHintNum;
+            UseHintNum = usedHintNum;
 
             // •¶š—ñ‚ÌØ‚èo‚µ
             text = text[(text.IndexOf('g') + 1)..];
@@ -73,8 +74,6 @@ public class ControlInputField : MonoBehaviour
             GameStatus = statusData;
         }
         _gameSettingControllerObject.GetComponent<GameSettingController>().IsUseCode = true;
-
-        Debug.Log(MapSeed);
     }
 
     public void ResetAnyField() 
