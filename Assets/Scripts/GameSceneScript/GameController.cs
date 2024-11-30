@@ -82,6 +82,7 @@ public class GameController : SceneController
         GameData.Score = Score;
         GameData.Stage = Stage;
         GameData.GameStatus = GameStatus;
+        GameData.Timer = Timer;
         //シーンのロード
         SceneManager.LoadScene(sceneName);
     }
