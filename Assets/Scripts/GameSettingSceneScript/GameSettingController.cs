@@ -99,7 +99,12 @@ public class GameSettingController : SceneController
     public int MapSeed
     {
         get { return _mapSeed; }
-        set { _mapSeed = value; }
+        set { 
+            if (MapSeed == 0)
+            {
+                _mapSeed = value;
+            }
+        }
     }
     //スケールが変更した際に変更を行うリスト
     public void UpdateScale()

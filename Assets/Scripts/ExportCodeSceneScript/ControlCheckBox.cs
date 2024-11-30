@@ -195,9 +195,9 @@ public class ControlCheckBox : MonoBehaviour
         string result = "";
 
         int gameStatus = _exportCodeControllerObject.GetComponent<ExportCodeController>().GameStatus;
-        if (gameStatus == 1) result = "a";
-        else if (gameStatus == 2) result = "b";  //失敗
-        else if (gameStatus == 3) result = "c"; //クリア
+
+        if (gameStatus == 2) result = "a";  //失敗
+        else if (gameStatus == 3) result = "b"; //クリア
 
         return result;
     }
