@@ -14,10 +14,10 @@ public class MakeMap : MonoBehaviour
         mapSeed = (mapSeed + generateTime) % 4096;
         generateTime++;
         int bomb = 0;
-        _mapSeed = mapSeed;
+        MapSeed = mapSeed;
         MapSize = mapSize;
         StageStatus = stageStatus;
-        Random.InitState(_mapSeed);
+        Random.InitState(MapSeed);
 
         //爆弾の設置
         for (int i = 0; i < MapSize[0]; i++)
@@ -32,6 +32,44 @@ public class MakeMap : MonoBehaviour
                         bomb++;
                     }
                     _stageStatus[i, j, k] = 0;
+                }
+            }
+        }
+        //グリッド毎の数値の設定
+        for (int i = 0; i < MapSize[0]; i++)
+        {
+            for (int j = 0; j < MapSize[1]; j++)
+            {
+                for (int k = 0; k < MapSize[2]; k++)
+                {
+                    if (_stage[i, j, k] != 27)
+                    {
+                        CheckBomb(i, j, k);
+                    }
+                }
+            }
+        }
+        FinishGenerate(bomb);
+    }
+    public void GenerateMap(int mapSeed, int[] mapSize)
+    {
+        int bomb = 0;
+        MapSeed = mapSeed;
+        MapSize = mapSize;
+        Random.InitState(MapSeed);
+
+        //爆弾の設置
+        for (int i = 0; i < MapSize[0]; i++)
+        {
+            for (int j = 0; j < MapSize[1]; j++)
+            {
+                for (int k = 0; k < MapSize[2]; k++)
+                {
+                    if ((int)Random.Range(0, 5) == 0)
+                    {
+                        _stage[i, j, k] = 27;
+                        bomb++;
+                    }
                 }
             }
         }
@@ -82,6 +120,11 @@ public class MakeMap : MonoBehaviour
     {
         get { return _mapSize; }
         set { _mapSize = value; }
+    }
+    public int MapSeed
+    {
+        get { return _mapSeed; }
+        set { _mapSeed = value; }
     }
     public int[,,] Stage
     {

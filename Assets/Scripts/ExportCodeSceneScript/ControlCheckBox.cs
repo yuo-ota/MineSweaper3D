@@ -153,7 +153,7 @@ public class ControlCheckBox : MonoBehaviour
             {
                 for (int k = 0; k < mapSize[2]; k++)
                 {
-                    number += stageStatus[i, j, k] * ((count % 2) * 5);
+                    number += stageStatus[i, j, k] * (int)(Mathf.Pow(5,count % 2));
                     parityNumber += stageStatus[i, j, k];
                     if (count % 2 == 1)
                     {
@@ -174,7 +174,7 @@ public class ControlCheckBox : MonoBehaviour
         {
             result += ConvertAlphabet(number);
         }
-        result = RLE(result);
+        result = RLE(result) + 'Z';
         result += useHintNum.ToString("X") + 'g';
 
         return result;

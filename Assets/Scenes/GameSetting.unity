@@ -153,6 +153,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 28616198f3b4b7341b99e593ad766f04, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _isUseCode: 0
   _mapSeed: 0
   _mapSize: 000000000000000000000000
   random:
@@ -163,6 +164,7 @@ MonoBehaviour:
   _gameStatus: 0
   _scaleImageCube: {fileID: 1138971440}
   _scaleDisplayUI: {fileID: 2025674494}
+  _exportCodeInputBox: {fileID: 831299640}
 --- !u!4 &42437265
 Transform:
   m_ObjectHideFlags: 0
@@ -1662,6 +1664,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f3e552b369226a349b61fb5ee08850e9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _gameSettingControllerObject: {fileID: 42437263}
+  _mapSize: 
+  _mapSeed: 0
+  _useHintNum: 0
+  _timer: 0
+  _gameStatus: 0
 --- !u!1 &874458395
 GameObject:
   m_ObjectHideFlags: 0
