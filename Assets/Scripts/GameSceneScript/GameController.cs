@@ -244,6 +244,7 @@ public class GameController : SceneController
         GameStatus = 3;
         _gameUIObject.GetComponent<GameUI>().MoveResult();
         _setCubeObject.GetComponent<SetCube>().ActiveLayer = -1;
+        DiggedGridNum = _setCubeObject.GetComponent<SetCube>().SearchDiggedCube();
         _resultScoreDisplayObject.GetComponent<ResultScoreDisplay>().UpdateScore(DiggedGridNum, UsedHintNum, Timer, true);
         Invoke("CanMoveOtherPageTrue", 3f);
     }
@@ -256,6 +257,7 @@ public class GameController : SceneController
         GameStatus = 2;
         _gameUIObject.GetComponent<GameUI>().MoveResult();
         _setCubeObject.GetComponent<SetCube>().ActiveLayer = -1;
+        DiggedGridNum = _setCubeObject.GetComponent<SetCube>().SearchDiggedCube();
         _resultScoreDisplayObject.GetComponent<ResultScoreDisplay>().UpdateScore(DiggedGridNum, UsedHintNum, Timer, false);
         _setCubeObject.GetComponent<SetCube>().OpenCubes();
         Invoke("CanMoveOtherPageTrue", 3f);

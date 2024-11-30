@@ -111,6 +111,10 @@ public class View3D : MonoBehaviour
         get { return _index; }
         set { _index = value; }
     }
+    public bool SearchDiggedCube()
+    {
+        return (_aroundBombNum != 27 && CubeStatus == 2);
+    }
     public void OpenCube()
     {
         if (_aroundBombNum == 27 && CubeStatus != 1)
@@ -119,13 +123,6 @@ public class View3D : MonoBehaviour
             transform.GetChild(0).gameObject.SetActive(false);
         }
         else if (CubeStatus == 4)
-        {
-            transform.parent.GetChild(1).GetComponent<MeshRenderer>().material = transform.parent.parent.parent.parent.GetComponent<SetCube>().MissFlagMaterial;
-            transform.GetChild(0).gameObject.SetActive(true);
-        }
-
-        // ExportCode経由の場合旗の誤設置が読み取れない問題を個別に対処する形
-        if (_aroundBombNum != 27 && CubeStatus == 1)
         {
             transform.parent.GetChild(1).GetComponent<MeshRenderer>().material = transform.parent.parent.parent.parent.GetComponent<SetCube>().MissFlagMaterial;
             transform.GetChild(0).gameObject.SetActive(true);

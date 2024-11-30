@@ -155,6 +155,21 @@ public class SetCube : MonoBehaviour
     {
         get { return _missFlagMaterial; }
     }
+    public int SearchDiggedCube()
+    {
+        int count = 0;
+        for (int i = 0; i < MapSize[2]; i++)
+        {
+            for (int j = 0; j < MapSize[1]; j++)
+            {
+                for (int k = 0; k < MapSize[0]; k++)
+                {
+                    if (transform.GetChild(i).GetChild(j).GetChild(k).GetChild(2).GetComponent<View3D>().SearchDiggedCube()) count++;
+                }
+            }
+        }
+        return count;
+    }
     public void OpenCubes()
     {
         for (int i = 0; i < MapSize[2]; i++)
