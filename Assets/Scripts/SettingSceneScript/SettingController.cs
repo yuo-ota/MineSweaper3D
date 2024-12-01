@@ -15,6 +15,8 @@ public class SettingController : SceneController
     [SerializeField] private GameObject _langRadioBtnObject;
     [SerializeField] private GameObject _volumeDisplayUI;
     [SerializeField] private GameObject _colorRadioBtnObject;
+    [SerializeField] private GameObject[] _enTextObject;
+    [SerializeField] private GameObject[] _jpTextObject;
     // Start is called before the first frame update
     void Start()
     {
@@ -78,6 +80,28 @@ public class SettingController : SceneController
     public void UpdateLanguage()
     {
         _langRadioBtnObject.GetComponent<ActiveLangRadioBtn>().IsEnglish = IsEnglish;
+        if (IsEnglish)
+        {
+            foreach (GameObject g in _enTextObject)
+            {
+                g.SetActive(true);
+            }
+            foreach (GameObject g in _jpTextObject)
+            {
+                g.SetActive(false);
+            }
+        }
+        else
+        {
+            foreach (GameObject g in _enTextObject)
+            {
+                g.SetActive(false);
+            }
+            foreach (GameObject g in _jpTextObject)
+            {
+                g.SetActive(true);
+            }
+        }
     }
     public void UpdateBgmVol()
     {
