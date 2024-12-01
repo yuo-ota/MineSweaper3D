@@ -20,12 +20,16 @@ public class GameSettingController : SceneController
     [SerializeField] private int _usedHintNum;
     [SerializeField] private int _timer;
     [SerializeField] private int _gameStatus;
+    [SerializeField] private bool _isEnglish;
     [Header("gameObject")]
     [SerializeField] private GameObject _scaleImageCube;
     [SerializeField] private GameObject _scaleDisplayUI;
     [SerializeField] private GameObject _exportCodeInputBox;
     [SerializeField] private GameObject _enableTextObject;
     [SerializeField] private GameObject _disableTextObject;
+
+    [SerializeField] private GameObject[] _enTextObject;
+    [SerializeField] private GameObject[] _jpTextObject;
     // Start is called before the first frame update
     void Start()
     {
@@ -33,6 +37,7 @@ public class GameSettingController : SceneController
         random = new Random((uint)System.DateTime.Now.Ticks);
         MapSeed = GameData.MapSeed;
         MapSize = GameData.MapSize;
+        IsEnglish = GameData.IsEnglish;
     }
     override
     public void MoveScene(string sceneName)
@@ -103,6 +108,15 @@ public class GameSettingController : SceneController
         get { return _mapSeed; }
         set { _mapSeed = value; }
     }
+    public bool IsEnglish
+    {
+        get { return _isEnglish; }
+        set
+        {
+            _isEnglish = value;
+            UpdateLanguage();
+        }
+    }
     public void DisplayCodeStatus(int i) 
     {
         if (i == 0)
@@ -155,6 +169,31 @@ public class GameSettingController : SceneController
         UsedHintNum = 0;
         Timer = 0;
         GameStatus = 1;
+    }
+    public void UpdateLanguage()
+    {
+        if (IsEnglish)
+        {
+            foreach (GameObject g in _enTextObject)
+            {
+                g.SetActive(true);
+            }
+            foreach (GameObject g in _jpTextObject)
+            {
+                g.SetActive(false);
+            }
+        }
+        else
+        {
+            foreach (GameObject g in _enTextObject)
+            {
+                g.SetActive(false);
+            }
+            foreach (GameObject g in _jpTextObject)
+            {
+                g.SetActive(true);
+            }
+        }
     }
 }
 

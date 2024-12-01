@@ -13,17 +13,20 @@ public class OperateScoreDetails : MonoBehaviour
     private Vector3 _prefubPos = new Vector3(0f, 0f, 0f);
     public void DigAGrid()
     {
-        SettingPrefub("+" + _scoreOfDig, "dig the grid");
+        if (_gameControllerObject.GetComponent<GameController>().IsEnglish) SettingPrefub("+" + _scoreOfDig, "dig the grid");
+        else SettingPrefub("+" + _scoreOfDig, "マス目の開示");
         _gameControllerObject.GetComponent<GameController>().Score += _scoreOfDig;
     }
     public void UseHint()
     {
-        SettingPrefub("-" + _scoreOfHint, "use a hint");
+        if (_gameControllerObject.GetComponent<GameController>().IsEnglish) SettingPrefub("-" + _scoreOfHint, "use a hint");
+        else SettingPrefub("-" + _scoreOfHint, "ヒントの使用");
         _gameControllerObject.GetComponent<GameController>().Score -= _scoreOfHint;
     }
     public void SettingPrefub(string score, string reason)
     {
         GameObject newPrefub = Instantiate(_prefubObject, _prefubPos, Quaternion.identity);
+        newPrefub.GetComponent<DisplayScoreDetail>().GameControllerObject = _gameControllerObject;
         newPrefub.GetComponent<DisplayScoreDetail>().AddScoreObject = score;
         newPrefub.GetComponent<DisplayScoreDetail>().DetailScoreObject = reason;
         _gameObjectList.Add(newPrefub);

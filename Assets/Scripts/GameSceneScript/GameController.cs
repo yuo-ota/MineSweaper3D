@@ -25,6 +25,7 @@ public class GameController : SceneController
     private float _milisec;
     [SerializeField] private bool _isEmphasize3Dview;
     [SerializeField] private bool _isExpand3Dview;
+    [SerializeField] private bool _isEnglish;
     [Header("gameObject")]
     [SerializeField] private GameObject _gameUIObject;
     [SerializeField] private GameObject _timerObject;
@@ -33,6 +34,8 @@ public class GameController : SceneController
     [SerializeField] private GameObject _setGridObject;
     [SerializeField] private GameObject _mouseControllObject;
     [SerializeField] private GameObject _resultScoreDisplayObject;
+    [SerializeField] private GameObject[] _enTextObject;
+    [SerializeField] private GameObject[] _jpTextObject;
     [Header("textObject")]
     [SerializeField] private TextMeshProUGUI _displayScore;
     void Start()
@@ -45,6 +48,7 @@ public class GameController : SceneController
         Timer = GameData.Timer;
         Score = GameData.Score;
         Stage = GameData.Stage;
+        IsEnglish = GameData.IsEnglish;
         StageStatus = GameData.StageStatus;
         GameStatus = GameData.GameStatus;
         _canMoveOtherPage = true;
@@ -156,6 +160,15 @@ public class GameController : SceneController
             UpdateCubeDist();
         }
     }
+    public bool IsEnglish
+    {
+        get { return _isEnglish; }
+        set
+        {
+            _isEnglish = value;
+            UpdateLanguage();
+        }
+    }
     public int[,,] Stage
     {
         get { return _stage; }
@@ -247,7 +260,7 @@ public class GameController : SceneController
         _setCubeObject.GetComponent<SetCube>().ActiveLayer = -1;
         DiggedGridNum = _setCubeObject.GetComponent<SetCube>().SearchDiggedCube();
         _resultScoreDisplayObject.GetComponent<ResultScoreDisplay>().UpdateScore(DiggedGridNum, UsedHintNum, Timer, true);
-        Invoke("CanMoveOtherPageTrue", 3f);
+        Invoke("CanMoveOtherPageTrue", 0.1f);
     }
     public void DefeatGame()
     {
@@ -261,10 +274,35 @@ public class GameController : SceneController
         DiggedGridNum = _setCubeObject.GetComponent<SetCube>().SearchDiggedCube();
         _resultScoreDisplayObject.GetComponent<ResultScoreDisplay>().UpdateScore(DiggedGridNum, UsedHintNum, Timer, false);
         _setCubeObject.GetComponent<SetCube>().OpenCubes();
-        Invoke("CanMoveOtherPageTrue", 3f);
+        Invoke("CanMoveOtherPageTrue", 0.1f);
     }
     public void CanMoveOtherPageTrue()
     {
         _canMoveOtherPage = true;
+    }
+    public void UpdateLanguage()
+    {
+        if (IsEnglish)
+        {
+            foreach (GameObject g in _enTextObject)
+            {
+                g.SetActive(true);
+            }
+            foreach (GameObject g in _jpTextObject)
+            {
+                g.SetActive(false);
+            }
+        }
+        else
+        {
+            foreach (GameObject g in _enTextObject)
+            {
+                g.SetActive(false);
+            }
+            foreach (GameObject g in _jpTextObject)
+            {
+                g.SetActive(true);
+            }
+        }
     }
 }
