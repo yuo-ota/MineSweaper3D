@@ -52,7 +52,7 @@ public class ControlCheckBox : MonoBehaviour
     public void UpdateCheckBox()
     {
         for (int i = 0; i < 3; i++)
-        {
+        {   
             _checkBoxObject[i].SetActive(_checkBoxStatus[i]);
         }
         UpdateOption();
