@@ -98,7 +98,6 @@ public class GameData : MonoBehaviour
         set 
         {
             _gameStatus = value;
-            Debug.Log(GameStatus);
         }
     }
     public static bool IsCleared

@@ -24,6 +24,8 @@ public class GameSettingController : SceneController
     [SerializeField] private GameObject _scaleImageCube;
     [SerializeField] private GameObject _scaleDisplayUI;
     [SerializeField] private GameObject _exportCodeInputBox;
+    [SerializeField] private GameObject _enableTextObject;
+    [SerializeField] private GameObject _disableTextObject;
     // Start is called before the first frame update
     void Start()
     {
@@ -100,6 +102,24 @@ public class GameSettingController : SceneController
     {
         get { return _mapSeed; }
         set { _mapSeed = value; }
+    }
+    public void DisplayCodeStatus(int i) 
+    {
+        if (i == 0)
+        {
+            _enableTextObject.SetActive(false);
+            _disableTextObject.SetActive(false);
+        }
+        else if (i == 1)
+        {
+            _enableTextObject.SetActive(true);
+            _disableTextObject.SetActive(false);
+        }
+        else
+        {
+            _enableTextObject.SetActive(false);
+            _disableTextObject.SetActive(true);
+        }
     }
     //スケールが変更した際に変更を行うリスト
     public void UpdateScale()

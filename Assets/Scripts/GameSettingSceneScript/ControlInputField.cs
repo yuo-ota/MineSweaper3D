@@ -23,6 +23,13 @@ public class ControlInputField : MonoBehaviour
 
     private void OnValueChanged(string text)
     {
+        if (text.Length == 0)
+        {
+            _gameSettingControllerObject.GetComponent<GameSettingController>().DisplayCodeStatus(0);
+            return;
+        }
+
+        _gameSettingControllerObject.GetComponent<GameSettingController>().DisplayCodeStatus(2);
         _gameSettingControllerObject.GetComponent<GameSettingController>().IsUseCode = false;
         ResetAnyField();
         
@@ -73,6 +80,7 @@ public class ControlInputField : MonoBehaviour
             if (statusData == -1) return;
             GameStatus = statusData;
         }
+        _gameSettingControllerObject.GetComponent<GameSettingController>().DisplayCodeStatus(1);
         _gameSettingControllerObject.GetComponent<GameSettingController>().IsUseCode = true;
     }
 
