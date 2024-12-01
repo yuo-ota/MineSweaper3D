@@ -64,6 +64,12 @@ public class ControlInputField : MonoBehaviour
             // •¶š—ñ‚ÌØ‚èo‚µ
             text = text[(text.IndexOf('g') + 1)..];
         }
+        else
+        {
+            int[,,] progressData = new int[bourdData[0], bourdData[1], bourdData[2]];
+            StageStatus = progressData;
+            UseHintNum = 0;
+        }
 
         // timer data
         if (optionKind / 2 == 1)
@@ -72,6 +78,10 @@ public class ControlInputField : MonoBehaviour
             int timerData = CheckTimerData(text);
             if (timerData == -1) return;
             Timer = timerData;
+        }
+        else
+        {
+            Timer = 0;
         }
 
         // status data

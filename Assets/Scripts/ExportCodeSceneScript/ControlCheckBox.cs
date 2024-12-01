@@ -8,7 +8,7 @@ using UnityEngine.UI;
 public class ControlCheckBox : MonoBehaviour
 {
     [SerializeField] private int _selectOption;
-    [SerializeField] private bool[] _checkBoxStatus = { true, false, false, false };
+    [SerializeField] private bool[] _checkBoxStatus = { true, true, true, false };
     [Header("gameObject")]
     [SerializeField] private GameObject _exportCodeControllerObject;
     [SerializeField] private TMP_Dropdown _selectBoxObject;
@@ -32,19 +32,16 @@ public class ControlCheckBox : MonoBehaviour
                     _checkBoxStatus[0] = true;
                     _checkBoxStatus[1] = true;
                     _checkBoxStatus[2] = true;
-                    _checkBoxStatus[3] = false;
                     break;
                 case 1:
                     _checkBoxStatus[0] = true;
-                    _checkBoxStatus[1] = false;
-                    _checkBoxStatus[2] = true;
-                    _checkBoxStatus[3] = false;
+                    _checkBoxStatus[1] = true;
+                    _checkBoxStatus[2] = false;
                     break;
                 case 2:
                     _checkBoxStatus[0] = true;
-                    _checkBoxStatus[1] = true;
+                    _checkBoxStatus[1] = false;
                     _checkBoxStatus[2] = false;
-                    _checkBoxStatus[3] = true;
                     break;
                 default:
                     break;
@@ -54,7 +51,7 @@ public class ControlCheckBox : MonoBehaviour
     }
     public void UpdateCheckBox()
     {
-        for (int i = 0; i < 4; i++)
+        for (int i = 0; i < 3; i++)
         {
             _checkBoxObject[i].SetActive(_checkBoxStatus[i]);
         }
@@ -85,27 +82,20 @@ public class ControlCheckBox : MonoBehaviour
         UpdateOption();
         SetSelectBoxOption();
     }
-    public void SetStatusButton()
-    {
-        _checkBoxStatus[3] = !_checkBoxStatus[3];
-        _checkBoxObject[3].SetActive(_checkBoxStatus[3]);
-        UpdateOption();
-        SetSelectBoxOption();
-    }
     public void UpdateOption()
     {
         string exportCode = OptionkindString();
         exportCode += BourdDataString();
         if (_checkBoxStatus[1]) exportCode += ProgressDataString();
         if (_checkBoxStatus[2]) exportCode += TimerDataString();
-        if (_checkBoxStatus[3]) exportCode += StatusDataString();
+        //if (_checkBoxStatus[3]) exportCode += StatusDataString();
         _exportCodeControllerObject.GetComponent<ExportCodeController>().UpdateCodeText(exportCode);
     }
     public string OptionkindString()
     {
         int result = 0;
         // data select
-        for (int i = 1; i < 4; i++)
+        for (int i = 1; i < 3; i++)
         {
             if (_checkBoxStatus[i])
             {
