@@ -10,7 +10,7 @@ public class ExportCodeUI : MonoBehaviour
     [SerializeField] private bool _isCopyDone;
     [Header("gamaObject")]
     [SerializeField] private GameObject _exportCodeControllerObject;
-    [SerializeReference] private GameObject _copyDoneText;
+    [SerializeReference] private GameObject[] _copyDoneText;
     [SerializeField] private TMP_InputField _exportCodeText;
 
     private void Start()
@@ -27,7 +27,8 @@ public class ExportCodeUI : MonoBehaviour
         set
         {
             _isCopyDone = value;
-            _copyDoneText.SetActive(value);
+            _copyDoneText[0].SetActive(value);
+            _copyDoneText[1].SetActive(value);
         }
     }
     public string ExportCode

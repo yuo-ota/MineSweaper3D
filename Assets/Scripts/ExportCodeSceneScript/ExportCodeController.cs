@@ -16,11 +16,14 @@ public class ExportCodeController : SceneController
     [SerializeField] private int _timer;
     [SerializeField] private int _score;
     [SerializeField] private int _gameStatus;
+    [SerializeField] private bool _isEnglish;
     [Header("")]
     [SerializeField] private int _selectOption;
     [Header("gameObject")]
     [SerializeField] private GameObject _ExportCodeUIObject;
     [SerializeField] private GameObject _checkBoxControlObject;
+    [SerializeField] private GameObject[] _enTextObject;
+    [SerializeField] private GameObject[] _jpTextObject;
 
     private void Start()
     {
@@ -33,6 +36,7 @@ public class ExportCodeController : SceneController
         Timer = GameData.Timer;
         Score = GameData.Score;
         GameStatus = GameData.GameStatus;
+        IsEnglish = GameData.IsEnglish;
     }
     override
     public void MoveScene(string sceneName)
@@ -106,9 +110,43 @@ public class ExportCodeController : SceneController
         get { return _gameStatus; }
         set { _gameStatus = value; }
     }
+    public bool IsEnglish
+    {
+        get { return _isEnglish; }
+        set
+        {
+            _isEnglish = value;
+            UpdateLanguage();
+        }
+    }
     public void UpdateOption()
     {
         _checkBoxControlObject.GetComponent<ControlCheckBox>().SelectOption = SelectOption;
+    }
+    public void UpdateLanguage()
+    {
+        if (IsEnglish)
+        {
+            foreach (GameObject g in _enTextObject)
+            {
+                g.SetActive(true);
+            }
+            foreach (GameObject g in _jpTextObject)
+            {
+                g.SetActive(false);
+            }
+        }
+        else
+        {
+            foreach (GameObject g in _enTextObject)
+            {
+                g.SetActive(false);
+            }
+            foreach (GameObject g in _jpTextObject)
+            {
+                g.SetActive(true);
+            }
+        }
     }
 }
 
