@@ -12,7 +12,7 @@ progress data
 n文字：hint仕様数を16進で保存し、最後の文字にgを置く。
 
 timer data
-n文字：秒数で保存+頭から逆順で保存
+n文字：秒数で保存+頭から逆順で保存	
 
 status data
 クリアをb, 失敗をaとして保存

@@ -95,7 +95,11 @@ public class GameData : MonoBehaviour
     public static int GameStatus
     {
         get { return _gameStatus; }
-        set { _gameStatus = value; }
+        set 
+        {
+            _gameStatus = value;
+            Debug.Log(GameStatus);
+        }
     }
     public static bool IsCleared
     {
