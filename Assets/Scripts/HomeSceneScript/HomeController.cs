@@ -11,8 +11,8 @@ public class HomeController : SceneController
     [SerializeField] private bool _isEnglish;
     [SerializeField] private GameObject _attentionObject;
 
-    [SerializeField] private GameObject _enTextObject;
-    [SerializeField] private GameObject _jpTextObject;
+    [SerializeField] private GameObject[] _enTextObject;
+    [SerializeField] private GameObject[] _jpTextObject;
 
     // Start is called before the first frame update
     void Start()
@@ -53,13 +53,25 @@ public class HomeController : SceneController
     {
         if (IsEnglish)
         {
-            _enTextObject.SetActive(true);
-            _jpTextObject.SetActive(false);
+            foreach (GameObject g in _enTextObject)
+            {
+                g.SetActive(true);
+            }
+            foreach (GameObject g in _jpTextObject)
+            {
+                g.SetActive(false);
+            }
         }
         else
         {
-            _enTextObject.SetActive(false);
-            _jpTextObject.SetActive(true);
+            foreach (GameObject g in _enTextObject)
+            {
+                g.SetActive(false);
+            }
+            foreach (GameObject g in _jpTextObject)
+            {
+                g.SetActive(true);
+            }
         }
     }
 }
