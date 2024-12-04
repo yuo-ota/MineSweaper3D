@@ -25,7 +25,7 @@ public class ExportCodeController : SceneController
     [SerializeField] private GameObject[] _enTextObject;
     [SerializeField] private GameObject[] _jpTextObject;
 
-    private void Start()
+    void Awake()
     {
         MapSeed = GameData.MapSeed;
         MapSize = GameData.MapSize;

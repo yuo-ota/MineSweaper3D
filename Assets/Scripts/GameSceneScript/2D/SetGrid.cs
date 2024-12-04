@@ -18,6 +18,10 @@ public class SetGrid : MonoBehaviour
     public void SettingPrefub(int[] mapSize, int[,,] stage, int[,,] stageStatus)
     {
         MapSize = mapSize;
+        float fontSize = Mathf.Min((int)(GetComponent<RectTransform>().rect.width / mapSize[1]), (int)(GetComponent<RectTransform>().rect.width / mapSize[0])) / 2f; 
+        float dx = 1f / mapSize[1];
+        float dy = 1f / mapSize[0];
+
         for (int i = 0; i < mapSize[2]; i++)
         {
             GameObject newGrandParentPrefub = Instantiate(_prefubParentObject, new Vector3(0f, 0f, 0f), Quaternion.identity);
@@ -26,21 +30,36 @@ public class SetGrid : MonoBehaviour
             {
                 GameObject newParentPrefub = Instantiate(_prefubParentObject, new Vector3(0f, 0f, 0f), Quaternion.identity);
                 newParentPrefub.transform.SetParent(newGrandParentPrefub.transform, false);
+
+                // 配置の設定
+                newParentPrefub.GetComponent<RectTransform>().pivot = new Vector2(0f, 0f);
+                newParentPrefub.GetComponent<RectTransform>().anchorMin = new Vector2(_prefubPos.x, 0);
+                newParentPrefub.GetComponent<RectTransform>().anchorMax = new Vector2(_prefubPos.x + dx, 1);
+                newParentPrefub.GetComponent<RectTransform>().offsetMin = new Vector2(0f, 0f);
+                newParentPrefub.GetComponent<RectTransform>().offsetMax = new Vector2(0f, 0f);
+
                 for (int k = mapSize[0] - 1; k >= 0 ; k--)
                 {
                     GameObject newPrefub = Instantiate(_prefubObject, _prefubPos, Quaternion.identity);
                     newPrefub.transform.SetParent(newParentPrefub.transform, false);
-                    newPrefub.GetComponent<RectTransform>().sizeDelta = new Vector2(700f / mapSize[1], 700f / mapSize[0]);
-                    newPrefub.transform.GetChild(0).GetComponent<TextMeshProUGUI>().fontSize = Mathf.Min((int)(700f / mapSize[0]), (int)(700f / mapSize[1])) / 2f;
+
+                    // 配置の設定
+                    newParentPrefub.GetComponent<RectTransform>().pivot = new Vector2(0f, 0f);
+                    newPrefub.GetComponent<RectTransform>().anchorMin = new Vector2(0, _prefubPos.y);
+                    newPrefub.GetComponent<RectTransform>().anchorMax = new Vector2(1, _prefubPos.y + dy);
+                    newPrefub.GetComponent<RectTransform>().offsetMin = new Vector2(0f, 0f);
+                    newPrefub.GetComponent<RectTransform>().offsetMax = new Vector2(0f, 0f);
+
+                    newPrefub.transform.GetChild(0).GetComponent<TextMeshProUGUI>().fontSize = fontSize;
                     newPrefub.GetComponent<View2D>().GameControllerObject = GameControllerObject;
                     newPrefub.GetComponent<View2D>().SetText = stage[k, j, i];
                     newPrefub.GetComponent<View2D>().Index = new int[3] { k, j, i };
                     newPrefub.GetComponent<View2D>().MapSize = MapSize;
                     newPrefub.GetComponent<View2D>().GridStatus = stageStatus[k, j, i];
-                    _prefubPos.y += 700f / mapSize[0];
+                    _prefubPos.y += dy;
                 }
                 _prefubPos.y = 0f;
-                _prefubPos.x += 700f / mapSize[1];
+                _prefubPos.x += dx;
             }
             _prefubPos.x = 0f;
         }
@@ -92,6 +111,7 @@ public class SetGrid : MonoBehaviour
     public void ChangeGrid(int[] index, int status)
     {
         transform.GetChild(index[2]).GetChild(index[1]).GetChild(MapSize[0] - index[0] - 1).GetComponent<View2D>().GridStatus = status;
+        _3dViewControlObject.GetComponent<SetCube>().ChangeCube(index, status);
     }
     public void ChangeGridStatus(int[] index, int value)
     {

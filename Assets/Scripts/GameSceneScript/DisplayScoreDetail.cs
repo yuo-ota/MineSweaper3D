@@ -98,7 +98,6 @@ public class DisplayScoreDetail : MonoBehaviour
     }
     public void SetAnimIdle()
     {
-        Debug.Log("Idle Anim");
         GetComponent<Animator>().SetBool("startAnim", false);
         if (_gameControllerObject.GetComponent<GameController>().IsEnglish)
         {

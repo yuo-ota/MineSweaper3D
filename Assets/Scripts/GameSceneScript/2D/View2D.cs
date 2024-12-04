@@ -3,8 +3,9 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
+using UnityEngine.EventSystems;
 
-public class View2D : MonoBehaviour
+public class View2D : MonoBehaviour, IPointerClickHandler
 {
     [SerializeField] private TextMeshProUGUI _textObject;
     [SerializeField] private int _aroundBombNum;
@@ -113,6 +114,15 @@ public class View2D : MonoBehaviour
                     break;
             }
         }
+    }
+    public void OnPointerClick(PointerEventData eventData)
+    {
+        int status = -1;
+        if (eventData.button == PointerEventData.InputButton.Left) status = 2;
+        else if (eventData.button == PointerEventData.InputButton.Right) status = 1;
+        
+        if (status == -1) return;
+        transform.parent.parent.parent.GetComponent<SetGrid>().ChangeGrid(Index, status);
     }
     public int[] Index
     {

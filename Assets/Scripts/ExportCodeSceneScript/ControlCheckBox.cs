@@ -13,7 +13,7 @@ public class ControlCheckBox : MonoBehaviour
     [SerializeField] private GameObject _exportCodeControllerObject;
     [SerializeField] private TMP_Dropdown _selectBoxObject;
     [SerializeField] private GameObject[] _checkBoxObject;
-    [SerializeField] private GameObject[] _buttonObject;
+    //[SerializeField] private GameObject[] _buttonObject;
 
     void Start()
     {

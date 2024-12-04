@@ -93,6 +93,7 @@ MonoBehaviour:
   _aroundBombNum: 0
   _gridStatus: 0
   _index: 
+  _mapSize: 
   _displayFlagImage: {fileID: 21300000, guid: 8eac633bb2de08f47813acc3b55b5026, type: 3}
   _nonDisplayFlagImage: {fileID: 21300000, guid: 7ae00cba450cf1640961beb92133829f, type: 3}
   _digedImage: {fileID: 21300000, guid: b1a17f6fc65039a45bf66dee4538f78a, type: 3}
