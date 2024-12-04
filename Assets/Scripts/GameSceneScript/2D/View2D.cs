@@ -29,9 +29,8 @@ public class View2D : MonoBehaviour, IPointerClickHandler
     public int GridStatus
     {
         get { return _gridStatus; }
-        set 
+        set
         {
-
             switch (value)
             {
                 case 0: //–¢’…è
@@ -111,6 +110,12 @@ public class View2D : MonoBehaviour, IPointerClickHandler
                     }
                     break;
                 default: //Šø‚ÌŒëİ’u
+                    if (_gridStatus == 0)
+                    {
+                        transform.GetChild(0).gameObject.SetActive(false);
+                        GetComponent<Image>().sprite = _displayFlagImage;
+                        _gridStatus = 4;
+                    }
                     break;
             }
         }
