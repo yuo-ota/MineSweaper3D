@@ -131,6 +131,10 @@ public class SetGrid : MonoBehaviour
                 {
                     if (index[2] + k < 0 || index[2] + k >= MapSize[2]) continue;
                     _3dViewControlObject.GetComponent<SetCube>().ChangeCube(index[0] + i, index[1] + j, index[2] + k, 2);
+                    if (_gameControllerObject.GetComponent<GameController>().GameStatus != 1) 
+                    {
+                        break;
+                    }
                     transform.GetChild(index[2] + k).GetChild(index[1] + j).GetChild(MapSize[0] - (index[0] + i) - 1).GetComponent<View2D>().GridStatus = 3;
                 }
             }

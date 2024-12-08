@@ -30,7 +30,7 @@ public class OperateScoreDetails : MonoBehaviour
         newPrefub.GetComponent<DisplayScoreDetail>().AddScoreObject = score;
         newPrefub.GetComponent<DisplayScoreDetail>().DetailScoreObject = reason;
         _gameObjectList.Add(newPrefub);
-        newPrefub.transform.SetParent(transform, true);
+        newPrefub.transform.SetParent(transform, false);
         newPrefub.SetActive(false);
         if (_gameObjectList.Count == 1)
         {

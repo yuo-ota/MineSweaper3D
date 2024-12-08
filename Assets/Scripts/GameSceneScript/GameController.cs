@@ -20,7 +20,7 @@ public class GameController : SceneController
     [SerializeField] private int _remainGridNum;
     [SerializeField] private bool _canMoveOtherPage;
     [SerializeField] private int _gameStatus;   //0:プレイしていない 1:プレイ中 2:失敗 3:クリア
-    [SerializeField] private bool _isGameSetting = true;
+    [SerializeField] private bool _isGameSetting;
     [SerializeField] private Random random;
     private float _milisec;
     [SerializeField] private bool _isEmphasize3Dview;
@@ -54,6 +54,8 @@ public class GameController : SceneController
         _canMoveOtherPage = true;
         _setCubeObject.GetComponent<SetCube>().SettingPrefub(MapSize, Stage, StageStatus);
         _setGridObject.GetComponent<SetGrid>().SettingPrefub(MapSize, Stage, StageStatus);
+        ScoreAlignment();
+        _isGameSetting = true;
         if (GameStatus == 2)
         {
             DefeatGame();
@@ -82,8 +84,8 @@ public class GameController : SceneController
         }
         GameData.BeforeSceneName = "Game";
         GameData.UsedHintNum = UsedHintNum;
-        GameData.DiggedGridNum = DiggedGridNum;
-        GameData.Score = Score;
+        GameData.DiggedGridNum = 0;
+        GameData.Score = 0;
         GameData.Stage = Stage;
         GameData.GameStatus = GameStatus;
         GameData.Timer = Timer;
@@ -233,7 +235,8 @@ public class GameController : SceneController
     }
     public void DiggedGrid()
     {
-        if (_isGameSetting) return;
+        //Debug.Log(_isGameSetting);
+        //if (_isGameSetting) return;
         _scoreObject.GetComponent<OperateScoreDetails>().DigAGrid();
         DiggedGridNum++;
     }
@@ -258,7 +261,7 @@ public class GameController : SceneController
         GameStatus = 3;
         _gameUIObject.GetComponent<GameUI>().MoveResult();
         _setCubeObject.GetComponent<SetCube>().ActiveLayer = -1;
-        DiggedGridNum = _setCubeObject.GetComponent<SetCube>().SearchDiggedCube();
+        //DiggedGridNum = _setCubeObject.GetComponent<SetCube>().SearchDiggedCube();
         _resultScoreDisplayObject.GetComponent<ResultScoreDisplay>().UpdateScore(DiggedGridNum, UsedHintNum, Timer, true);
         Invoke("CanMoveOtherPageTrue", 0.1f);
     }
@@ -271,7 +274,7 @@ public class GameController : SceneController
         GameStatus = 2;
         _gameUIObject.GetComponent<GameUI>().MoveResult();
         _setCubeObject.GetComponent<SetCube>().ActiveLayer = -1;
-        DiggedGridNum = _setCubeObject.GetComponent<SetCube>().SearchDiggedCube();
+        //DiggedGridNum = _setCubeObject.GetComponent<SetCube>().SearchDiggedCube();
         _resultScoreDisplayObject.GetComponent<ResultScoreDisplay>().UpdateScore(DiggedGridNum, UsedHintNum, Timer, false);
         _setCubeObject.GetComponent<SetCube>().OpenCubes();
         Invoke("CanMoveOtherPageTrue", 0.1f);
@@ -303,6 +306,13 @@ public class GameController : SceneController
             {
                 g.SetActive(true);
             }
+        }
+    }
+    public void ScoreAlignment()
+    {
+        for (int i = 0; i < UsedHintNum; i++)
+        {
+            _scoreObject.GetComponent<OperateScoreDetails>().UseHint();
         }
     }
 }

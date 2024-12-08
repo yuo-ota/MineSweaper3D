@@ -10,7 +10,7 @@ GameObject:
   m_Component:
   - component: {fileID: 759393408211506334}
   - component: {fileID: 11551698346024403}
-  m_Layer: 0
+  m_Layer: 3
   m_Name: display
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -45,7 +45,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 373778a993cb8c94498b01760e94abf4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _layer: 0
+  _cubeStatus: 0
   _camObject: {fileID: 0}
+  _index: 
+  _aroundBombNum: 0
 --- !u!1 &1835768516807155368
 GameObject:
   m_ObjectHideFlags: 0
@@ -57,7 +61,7 @@ GameObject:
   - component: {fileID: 1626379988140524031}
   - component: {fileID: 2335475407688960953}
   - component: {fileID: 7934564687349525710}
-  m_Layer: 0
+  m_Layer: 3
   m_Name: Text (TMP)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -265,6 +269,10 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: -4379615773041148065, guid: f842f6365041dfd48838dc9da1da2567, type: 3}
+      propertyPath: m_Layer
+      value: 3
+      objectReference: {fileID: 0}
     - target: {fileID: -2692787024934286082, guid: f842f6365041dfd48838dc9da1da2567, type: 3}
       propertyPath: m_LocalRotation.w
       value: 0.7071068
@@ -296,6 +304,14 @@ PrefabInstance:
     - target: {fileID: 919132149155446097, guid: f842f6365041dfd48838dc9da1da2567, type: 3}
       propertyPath: m_Name
       value: cube
+      objectReference: {fileID: 0}
+    - target: {fileID: 919132149155446097, guid: f842f6365041dfd48838dc9da1da2567, type: 3}
+      propertyPath: m_Layer
+      value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 3654934372253022927, guid: f842f6365041dfd48838dc9da1da2567, type: 3}
+      propertyPath: m_Layer
+      value: 3
       objectReference: {fileID: 0}
     - target: {fileID: 6526035313636248894, guid: f842f6365041dfd48838dc9da1da2567, type: 3}
       propertyPath: m_LocalRotation.w

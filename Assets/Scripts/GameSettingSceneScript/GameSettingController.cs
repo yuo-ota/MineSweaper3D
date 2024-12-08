@@ -18,6 +18,7 @@ public class GameSettingController : SceneController
     [Header("need reset param")]
     [SerializeField] private int _score;
     [SerializeField] private int _usedHintNum;
+    [SerializeField] private int _diggedGridNum;
     [SerializeField] private int _timer;
     [SerializeField] private int _gameStatus;
     [SerializeField] private bool _isEnglish;
@@ -25,8 +26,8 @@ public class GameSettingController : SceneController
     [SerializeField] private GameObject _scaleImageCube;
     [SerializeField] private GameObject _scaleDisplayUI;
     [SerializeField] private GameObject _exportCodeInputBox;
-    [SerializeField] private GameObject _enableTextObject;
-    [SerializeField] private GameObject _disableTextObject;
+    [SerializeField] private GameObject[] _enableTextObject;
+    [SerializeField] private GameObject[] _disableTextObject;
 
     [SerializeField] private GameObject[] _enTextObject;
     [SerializeField] private GameObject[] _jpTextObject;
@@ -38,6 +39,7 @@ public class GameSettingController : SceneController
         MapSeed = GameData.MapSeed;
         MapSize = GameData.MapSize;
         IsEnglish = GameData.IsEnglish;
+        DisplayCodeStatus(0);
     }
     override
     public void MoveScene(string sceneName)
@@ -48,6 +50,7 @@ public class GameSettingController : SceneController
             GenerateMap();
             GameData.Score = Score;
             GameData.UsedHintNum = UsedHintNum;
+            GameData.DiggedGridNum = DiggedGridNum;
             GameData.Timer = Timer;
             GameData.GameStatus = GameStatus;
         }
@@ -93,6 +96,11 @@ public class GameSettingController : SceneController
         get { return _usedHintNum; }
         set { _usedHintNum = value; }
     }
+    public int DiggedGridNum
+    {
+        get { return _diggedGridNum; }
+        set { _diggedGridNum = value; }
+    }
     public int Timer
     {
         get { return _timer; }
@@ -121,18 +129,24 @@ public class GameSettingController : SceneController
     {
         if (i == 0)
         {
-            _enableTextObject.SetActive(false);
-            _disableTextObject.SetActive(false);
+            _enableTextObject[0].SetActive(false);
+            _disableTextObject[0].SetActive(false);
+            _enableTextObject[1].SetActive(false);
+            _disableTextObject[1].SetActive(false);
         }
         else if (i == 1)
         {
-            _enableTextObject.SetActive(true);
-            _disableTextObject.SetActive(false);
+            _enableTextObject[0].SetActive(true);
+            _disableTextObject[0].SetActive(false);
+            _enableTextObject[1].SetActive(true);
+            _disableTextObject[1].SetActive(false);
         }
         else
         {
-            _enableTextObject.SetActive(false);
-            _disableTextObject.SetActive(true);
+            _enableTextObject[0].SetActive(false);
+            _disableTextObject[0].SetActive(true);
+            _enableTextObject[1].SetActive(false);
+            _disableTextObject[1].SetActive(true);
         }
     }
     //スケールが変更した際に変更を行うリスト
@@ -166,6 +180,7 @@ public class GameSettingController : SceneController
     public void ResetGame()
     {
         Score = 0;
+        DiggedGridNum = 0;
         UsedHintNum = 0;
         Timer = 0;
         GameStatus = 1;

@@ -105,6 +105,7 @@ public class SetCube : MonoBehaviour
     public void UpdateActiveLayer(int activeLayerNum)
     {
         if (MapSize == null) return;
+        if (MapSize.Length == 0) return;
         for (int i = 0; i < MapSize[2]; i++)
         {
             if (i == activeLayerNum)
@@ -172,6 +173,9 @@ public class SetCube : MonoBehaviour
     }
     public void OpenCubes()
     {
+        if (MapSize == null) return;
+        if (MapSize.Length == 0) return;
+
         for (int i = 0; i < MapSize[2]; i++)
         {
             for (int j = 0; j < MapSize[1]; j++)
