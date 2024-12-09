@@ -94,7 +94,7 @@ public class CubeAnim : MonoBehaviour
         transform.GetChild(13).GetChild(2).GetComponent<View3DAnim>().SetText = i + 1;
         transform.GetChild(order[i]).GetChild(1).GetComponent<MeshRenderer>().material = DisplayBombMaterial;
         i++;
-        Invoke("ChangeEnv", .1f);
+        Invoke("ChangeEnv", .06f);
     }
     public GameObject CamObject
     {
