@@ -1,55 +1,36 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using UnityEditor;
 using UnityEngine.SceneManagement;
+using TMPro;
 
-
-public class HomeController : SceneController
+public class RuleController : SceneController
 {
-    [SerializeField] private int _gameStatus;
+    [Header("data")]
     [SerializeField] private bool _isEnglish;
-    [SerializeField] private GameObject _attentionObject;
+    [SerializeField] private GameObject[] _pages;
 
+    [Header("GameObject")]
     [SerializeField] private GameObject[] _enTextObject;
     [SerializeField] private GameObject[] _jpTextObject;
+    [SerializeField] private TextMeshProUGUI pageIndex;
 
-    [SerializeField] private GameObject _titleAnimatorObject;
-    [SerializeField] private GameObject _cubeControllObject;
-
+    [SerializeField] private int _pageNum = 0;
     // Start is called before the first frame update
     void Start()
     {
-        GameStatus = GameData.GameStatus;
-        IsEnglish = GameData.IsEnglish;
-        if (GameData.BeforeSceneName != null) Destroy(_titleAnimatorObject);
-        else _cubeControllObject.GetComponent<CubeAnim>().MakeCube();
         IsOpenEscPanel = false;
-        
-    }
-    public int GameStatus
-    {
-        get { return _gameStatus; }
-        set {
-            _gameStatus = value;
-            _attentionObject.GetComponent<Attention>().CheckStatus();
-        }
+        IsEnglish = GameData.IsEnglish;
+        MovePage(0);
     }
     public bool IsEnglish
     {
         get { return _isEnglish; }
-        set 
+        set
         {
             _isEnglish = value;
             UpdateLanguage();
         }
-    }
-    override
-    public void MoveScene(string sceneName)
-    {
-        GameData.BeforeSceneName = "Home";
-        //シーンのロード
-        SceneManager.LoadScene(sceneName);
     }
     public void UpdateLanguage()
     {
@@ -75,5 +56,34 @@ public class HomeController : SceneController
                 g.SetActive(true);
             }
         }
+    }
+    public void MovePage(int i)
+    {
+        if (i < 0 || i >= _pages.Length)
+        {
+            MoveScene("Home");
+            return;
+        }
+
+        _pages[_pageNum].SetActive(false);
+        _pages[i].SetActive(true);
+        _pageNum = i;
+
+        pageIndex.SetText(_pageNum + 1 + "/" + _pages.Length);
+    }
+    override
+    public void MoveScene(string sceneName)
+    {
+        GameData.BeforeSceneName = "Rule";
+        SceneManager.LoadScene(sceneName);
+    }
+    public int PageNum
+    {
+        set 
+        {
+            _pageNum = value;
+
+        }
+        get { return _pageNum;}
     }
 }

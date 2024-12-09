@@ -34,6 +34,7 @@ public class GameSettingController : SceneController
     // Start is called before the first frame update
     void Start()
     {
+        IsOpenEscPanel = false;
         IsUseCode = false;
         random = new Random((uint)System.DateTime.Now.Ticks);
         MapSeed = GameData.MapSeed;

@@ -26,10 +26,6 @@ public class SettingController : SceneController
         ColorMode = GameData.ColorMode;
     }
 
-    // Update is called once per frame
-    void Update()
-    {
-    }
     override
     public void MoveScene(string sceneName)
     {

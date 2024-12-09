@@ -40,6 +40,7 @@ public class GameController : SceneController
     [SerializeField] private TextMeshProUGUI _displayScore;
     void Start()
     {
+        IsOpenEscPanel = false;
         random = new Random((uint)System.DateTime.Now.Ticks);
         BombNum = GameData.BombNum;
         MapSize = GameData.MapSize;
@@ -73,6 +74,11 @@ public class GameController : SceneController
         {
             _milisec = 0f;
             Timer++;
+        }
+        if (Input.GetKeyDown(KeyCode.Escape))
+        {
+            if (!IsOpenEscPanel) PanelOpen();
+            else PanelClose();
         }
     }
     override

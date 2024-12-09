@@ -14,11 +14,6 @@ public class CreditController : SceneController
     {
         IsEnglish = GameData.IsEnglish;
     }
-
-    // Update is called once per frame
-    void Update()
-    {
-    }
     public bool IsEnglish
     {
         get { return _isEnglish; }
