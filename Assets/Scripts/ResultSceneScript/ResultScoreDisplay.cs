@@ -33,7 +33,7 @@ public class ResultScoreDisplay : MonoBehaviour
         }
         if (isCleared)
         {
-            if (timer < _timerMaxNum)
+            if (timer/60 < _timerMaxNum)
             {
                 SetPosition(2, elementNum);
                 SetTimerText(timer);

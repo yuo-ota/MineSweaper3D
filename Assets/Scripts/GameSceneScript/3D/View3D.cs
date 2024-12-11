@@ -80,10 +80,12 @@ public class View3D : MonoBehaviour
                     {
                         if (_aroundBombNum == 27)
                         {
+                            transform.GetChild(0).gameObject.SetActive(false);
                             transform.parent.GetChild(1).GetComponent<MeshRenderer>().material = transform.parent.parent.parent.parent.GetComponent<SetCube>().DisplayBombMaterial;
                         }
                         else if (_aroundBombNum == 0)
                         {
+                            transform.GetChild(0).gameObject.SetActive(false);
                             _cubeStatus = value;
                             transform.parent.GetChild(1).GetComponent<MeshRenderer>().material = transform.parent.parent.parent.parent.GetComponent<SetCube>().DigedCubeMaterial;
                         }

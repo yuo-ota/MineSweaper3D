@@ -36,6 +36,7 @@ public class GameController : SceneController
     [SerializeField] private GameObject _resultScoreDisplayObject;
     [SerializeField] private GameObject[] _enTextObject;
     [SerializeField] private GameObject[] _jpTextObject;
+    [SerializeField] private GameObject _3DCamObject;
     [Header("textObject")]
     [SerializeField] private TextMeshProUGUI _displayScore;
     void Start()
@@ -157,7 +158,11 @@ public class GameController : SceneController
     public bool IsEmphasize3Dview
     {
         get { return _isEmphasize3Dview; }
-        set { _isEmphasize3Dview = value; }
+        set 
+        {
+            _3DCamObject.transform.GetComponent<CameraControl>().InitPosition();
+            _isEmphasize3Dview = value;
+        }
     }
     public bool IsExpand3Dview
     {
@@ -260,7 +265,7 @@ public class GameController : SceneController
     }
     public void ClearGame()
     {
-        Debug.Log("clear");
+        //Debug.Log("clear");
         GameData.Timer = Timer;
         _mouseControllObject.GetComponent<MouseInput>().CanMouseInput = false;
         _canMoveOtherPage = false;
@@ -273,7 +278,7 @@ public class GameController : SceneController
     }
     public void DefeatGame()
     {
-        Debug.Log("Defeat");
+        //Debug.Log("Defeat");
         GameData.Timer = Timer;
         _mouseControllObject.GetComponent<MouseInput>().CanMouseInput = false;
         _canMoveOtherPage = false;

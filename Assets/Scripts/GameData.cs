@@ -19,6 +19,7 @@ public class GameData : MonoBehaviour
     private static string _beforeSceneName = null;
     private static int _gameStatus = 0;
     private static bool _isCleared = false;
+    private static bool _canMusicStart = true;
 
     public static int MapSeed
     {
@@ -49,7 +50,12 @@ public class GameData : MonoBehaviour
     {
         get { return _bombNum; }
         set { _bombNum = value; }
-    }  
+    }
+    public static bool CanMusicStart
+    {
+        get { return _canMusicStart; }
+        set { _canMusicStart = value; }
+    }
     public static int DiggedGridNum
     {
         get { return _diggedGridNum; }

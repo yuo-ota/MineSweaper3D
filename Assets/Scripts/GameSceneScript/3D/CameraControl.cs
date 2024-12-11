@@ -8,6 +8,7 @@ public class CameraControl : MonoBehaviour
     [SerializeField] private float _thetaY = 45f;
     [SerializeField] private float _length = 50f;
     [SerializeField] private Vector3 _anker = new Vector3(0f, 0f, 0f);
+    [SerializeField] private Vector3 _averagePos = new Vector3(0f, 0f, 0f);
     [SerializeField] private static Vector3 _direction;
     // Start is called before the first frame update
     void Start()
@@ -38,6 +39,11 @@ public class CameraControl : MonoBehaviour
         get { return _anker; }
         set { _anker = value; }
     }
+    public Vector3 AveragePos
+    {
+        get { return _averagePos; }
+        set { _averagePos = value; }
+    }
     public static Vector3 Direction
     {
         get { return _direction; }
@@ -62,6 +68,14 @@ public class CameraControl : MonoBehaviour
     {
         Anker += new Vector3(Mathf.Cos(Mathf.Deg2Rad * (ThetaX + 90)), 0, Mathf.Sin(Mathf.Deg2Rad * (ThetaX + 90))) * v.x / 25;
         Anker += new Vector3(Mathf.Cos(Mathf.Deg2Rad * (ThetaX + 180)) * Mathf.Sin(Mathf.Deg2Rad * (ThetaY)), Mathf.Cos(Mathf.Deg2Rad * (ThetaY)), Mathf.Sin(Mathf.Deg2Rad * (ThetaX + 180)) * Mathf.Sin(Mathf.Deg2Rad * (ThetaY))) * v.y / 25;
+        ChangePosition();
+    }
+    public void InitPosition()
+    {
+        ThetaX = 45;
+        ThetaY = 45;
+        Length = 20;
+        Anker = AveragePos;
         ChangePosition();
     }
     public void ChangePosition()

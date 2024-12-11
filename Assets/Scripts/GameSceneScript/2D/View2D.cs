@@ -18,6 +18,10 @@ public class View2D : MonoBehaviour, IPointerClickHandler
     [SerializeField] private Sprite _bombDridImage;
     [SerializeField] private GameObject _gameControllerObject;
 
+    [SerializeField] private AudioSource _audioSource;
+    [SerializeField] private AudioClip _leftClickSe;
+    [SerializeField] private AudioClip _rightClickSe;
+
     public int SetText
     {
         set
@@ -45,6 +49,7 @@ public class View2D : MonoBehaviour, IPointerClickHandler
                 case 1: //ä¯ÇÃê›íu/âèú
                     if (_gridStatus == 0)
                     {
+                        _audioSource.PlayOneShot(_rightClickSe);
                         transform.GetChild(0).gameObject.SetActive(false);
                         GetComponent<Image>().sprite = _displayFlagImage;
                         if (_aroundBombNum != 27)
@@ -60,6 +65,7 @@ public class View2D : MonoBehaviour, IPointerClickHandler
                     }
                     else if (_gridStatus == 1 || _gridStatus == 4)
                     {
+                        _audioSource.PlayOneShot(_rightClickSe);
                         transform.GetChild(0).gameObject.SetActive(false);
                         _gridStatus = 0;
                         transform.parent.parent.parent.GetComponent<SetGrid>().ChangeGridStatus(Index, 0);
@@ -76,6 +82,8 @@ public class View2D : MonoBehaviour, IPointerClickHandler
                         }
                         else if (_aroundBombNum == 0)
                         {
+                            if (_gridStatus == 0) _audioSource.PlayOneShot(_leftClickSe);
+                            transform.GetChild(0).gameObject.SetActive(false);
                             GetComponent<Image>().sprite = _digedImage;
                             transform.parent.parent.parent.GetComponent<SetGrid>().ChangeGridStatus(Index, value);
                             _gameControllerObject.GetComponent<GameController>().DiggedGrid();
@@ -86,6 +94,7 @@ public class View2D : MonoBehaviour, IPointerClickHandler
                         }
                         else
                         {
+                            _audioSource.PlayOneShot(_leftClickSe);
                             transform.GetChild(0).gameObject.SetActive(true);
                             GetComponent<Image>().sprite = _digedImage;
                             transform.parent.parent.parent.GetComponent<SetGrid>().ChangeGridStatus(Index, value);
@@ -113,6 +122,7 @@ public class View2D : MonoBehaviour, IPointerClickHandler
                 default: //ä¯ÇÃåÎê›íu
                     if (_gridStatus == 0)
                     {
+                        _audioSource.PlayOneShot(_rightClickSe);
                         transform.GetChild(0).gameObject.SetActive(false);
                         GetComponent<Image>().sprite = _displayFlagImage;
                         _gridStatus = 4;

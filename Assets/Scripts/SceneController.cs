@@ -8,6 +8,7 @@ public abstract class SceneController : MonoBehaviour
     [SerializeField] private GameObject _escapePanel;
     [SerializeField] private bool _isOpenEscPanel = false;
 
+
     private void Update()
     {
         if (Input.GetKeyDown(KeyCode.Escape))

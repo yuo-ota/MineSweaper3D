@@ -55,6 +55,7 @@ public class SetCube : MonoBehaviour
         }
         _averagePos /= (mapSize[0] * mapSize[1] * mapSize[2]);
         _camObject.GetComponent<CameraControl>().Anker = _averagePos;
+        _camObject.GetComponent<CameraControl>().AveragePos = _averagePos;
         _camObject.GetComponent<CameraControl>().ChangePosition();
     }
     public void ExpandPosition(float f)

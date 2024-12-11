@@ -152,7 +152,8 @@ public class SetGrid : MonoBehaviour
                 for (int k = -1; k <= 1; k++)
                 {
                     if (index[2] + k < 0 || index[2] + k >= MapSize[2]) continue;
-                    if (transform.GetChild(index[2] + k).GetChild(index[1] + j).GetChild(MapSize[0] - (index[0] + i) - 1).GetComponent<View2D>().GridStatus == 1)
+                    if (transform.GetChild(index[2] + k).GetChild(index[1] + j).GetChild(MapSize[0] - (index[0] + i) - 1).GetComponent<View2D>().GridStatus == 1 ||
+                        transform.GetChild(index[2] + k).GetChild(index[1] + j).GetChild(MapSize[0] - (index[0] + i) - 1).GetComponent<View2D>().GridStatus == 4)
                     {
                         flagNum++;
                     }
