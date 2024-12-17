@@ -919,7 +919,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 7934564687349525710, guid: d77f6ccca7821a84b8006026c9005708, type: 3}
       propertyPath: m_text
-      value: A
+      value: E
       objectReference: {fileID: 0}
     - target: {fileID: 7934564687349525710, guid: d77f6ccca7821a84b8006026c9005708, type: 3}
       propertyPath: m_fontMaterial
