@@ -6,6 +6,7 @@ public class Attention : MonoBehaviour
 {
     [SerializeField] private GameObject _homeControllerObject;
     private HomeController _homeControllerScript;
+    [SerializeField] private GameObject[] _attentionText;
     // Start is called before the first frame update
     void Start()
     {
@@ -17,7 +18,7 @@ public class Attention : MonoBehaviour
 
     public void CheckStatus()
     {
-        if (_homeControllerScript.IsInProgress)
+        if (_homeControllerScript.GameStatus == 1)
         {
             OnEnable();
         }
@@ -29,9 +30,17 @@ public class Attention : MonoBehaviour
     public void OnEnable()
     {
         this.gameObject.SetActive(true);
+        foreach (GameObject g in _attentionText)
+        {
+            g.SetActive(true);
+        }
     }
     public void OnDisable()
     {
         this.gameObject.SetActive(false);
+        foreach (GameObject g in _attentionText)
+        {
+            g.SetActive(false);
+        }
     }
 }

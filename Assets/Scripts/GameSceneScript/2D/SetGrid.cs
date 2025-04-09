@@ -10,8 +10,6 @@ public class SetGrid : MonoBehaviour
     [SerializeField] private GameObject _prefubParentObject;
     [SerializeField] private GameObject _3dViewControlObject;
 
-    [SerializeField] private List<GameObject> _parentObjects;
-
     [SerializeField] private Vector3 _prefubPos = new Vector3(0f, 0f, 0f);
 
     [SerializeField] private int _activeLayer;
@@ -20,27 +18,48 @@ public class SetGrid : MonoBehaviour
     public void SettingPrefub(int[] mapSize, int[,,] stage, int[,,] stageStatus)
     {
         MapSize = mapSize;
+        float fontSize = Mathf.Min((int)(GetComponent<RectTransform>().rect.width / mapSize[1]), (int)(GetComponent<RectTransform>().rect.width / mapSize[0])) / 2f; 
+        float dx = 1f / mapSize[1];
+        float dy = 1f / mapSize[0];
+
         for (int i = 0; i < mapSize[2]; i++)
         {
-            GameObject newParentPrefub = Instantiate(_prefubParentObject, new Vector3(0f, 0f, 0f), Quaternion.identity);
-            newParentPrefub.transform.SetParent(transform, false);
-            _parentObjects.Add(newParentPrefub);
+            GameObject newGrandParentPrefub = Instantiate(_prefubParentObject, new Vector3(0f, 0f, 0f), Quaternion.identity);
+            newGrandParentPrefub.transform.SetParent(transform, false);
             for (int j = 0; j < mapSize[1]; j++)
             {
+                GameObject newParentPrefub = Instantiate(_prefubParentObject, new Vector3(0f, 0f, 0f), Quaternion.identity);
+                newParentPrefub.transform.SetParent(newGrandParentPrefub.transform, false);
+
+                // 配置の設定
+                newParentPrefub.GetComponent<RectTransform>().pivot = new Vector2(0f, 0f);
+                newParentPrefub.GetComponent<RectTransform>().anchorMin = new Vector2(_prefubPos.x, 0);
+                newParentPrefub.GetComponent<RectTransform>().anchorMax = new Vector2(_prefubPos.x + dx, 1);
+                newParentPrefub.GetComponent<RectTransform>().offsetMin = new Vector2(0f, 0f);
+                newParentPrefub.GetComponent<RectTransform>().offsetMax = new Vector2(0f, 0f);
+
                 for (int k = mapSize[0] - 1; k >= 0 ; k--)
                 {
                     GameObject newPrefub = Instantiate(_prefubObject, _prefubPos, Quaternion.identity);
                     newPrefub.transform.SetParent(newParentPrefub.transform, false);
-                    newPrefub.GetComponent<RectTransform>().sizeDelta = new Vector2(700f / mapSize[1], 700f / mapSize[0]);
-                    newPrefub.transform.GetChild(0).GetComponent<TextMeshProUGUI>().fontSize = Mathf.Min((int)(700f / mapSize[0]), (int)(700f / mapSize[1])) / 2f;
+
+                    // 配置の設定
+                    newParentPrefub.GetComponent<RectTransform>().pivot = new Vector2(0f, 0f);
+                    newPrefub.GetComponent<RectTransform>().anchorMin = new Vector2(0, _prefubPos.y);
+                    newPrefub.GetComponent<RectTransform>().anchorMax = new Vector2(1, _prefubPos.y + dy);
+                    newPrefub.GetComponent<RectTransform>().offsetMin = new Vector2(0f, 0f);
+                    newPrefub.GetComponent<RectTransform>().offsetMax = new Vector2(0f, 0f);
+
+                    newPrefub.transform.GetChild(0).GetComponent<TextMeshProUGUI>().fontSize = fontSize;
                     newPrefub.GetComponent<View2D>().GameControllerObject = GameControllerObject;
                     newPrefub.GetComponent<View2D>().SetText = stage[k, j, i];
                     newPrefub.GetComponent<View2D>().Index = new int[3] { k, j, i };
+                    newPrefub.GetComponent<View2D>().MapSize = MapSize;
                     newPrefub.GetComponent<View2D>().GridStatus = stageStatus[k, j, i];
-                    _prefubPos.y += 700f / mapSize[0];
+                    _prefubPos.y += dy;
                 }
                 _prefubPos.y = 0f;
-                _prefubPos.x += 700f / mapSize[1];
+                _prefubPos.x += dx;
             }
             _prefubPos.x = 0f;
         }
@@ -58,11 +77,11 @@ public class SetGrid : MonoBehaviour
     public void UpdateActiveLayer()
     {
         _3dViewControlObject.GetComponent<SetCube>().ActiveLayer = ActiveLayer;
-        foreach (GameObject g in _parentObjects)
+        for (int i = 0; i < MapSize[2]; i++)
         {
-            g.SetActive(false);
+            transform.GetChild(i).transform.gameObject.SetActive(false);
         }
-        _parentObjects[_activeLayer].SetActive(true);
+        transform.GetChild(ActiveLayer).transform.gameObject.SetActive(true);
     }
     public int ActiveLayer
     {
@@ -85,26 +104,65 @@ public class SetGrid : MonoBehaviour
             index[0] = MapSize[0] - (int)(gridPosition.y * MapSize[0] / 700f) - 1;
             index[1] = (int)(gridPosition.x * MapSize[1] / 700f);
             index[2] = ActiveLayer;
-            Debug.Log(index[0] + ", " + index[1] + ", " + index[2]);
             return index;
         }
         return null;
     }
     public void ChangeGrid(int[] index, int status)
     {
-        for (int i = 0; i < transform.GetChild(index[2]).childCount; i++)
-        {
-            if (transform.GetChild(index[2]).GetChild(i).GetComponent<View2D>().Index[0] == index[0]
-                && transform.GetChild(index[2]).GetChild(i).GetComponent<View2D>().Index[1] == index[1])
-            {
-                transform.GetChild(index[2]).GetChild(i).GetComponent<View2D>().GridStatus = status;
-            }
-        }
+        transform.GetChild(index[2]).GetChild(index[1]).GetChild(MapSize[0] - index[0] - 1).GetComponent<View2D>().GridStatus = status;
+        _3dViewControlObject.GetComponent<SetCube>().ChangeCube(index, status);
     }
     public void ChangeGridStatus(int[] index, int value)
     {
         int[,,] status = _gameControllerObject.GetComponent<GameController>().StageStatus;
         status[index[0], index[1], index[2]] = value;
         _gameControllerObject.GetComponent<GameController>().StageStatus = status;
+    }
+    public void AutoOpen(int[] index)
+    {
+        for (int i = -1; i <= 1; i++)
+        {
+            if (index[0] + i < 0 || index[0] + i >= MapSize[0]) continue;
+            for (int j = -1; j <= 1; j++)
+            {
+                if (index[1] + j < 0 || index[1] + j >= MapSize[1]) continue;
+                for (int k = -1; k <= 1; k++)
+                {
+                    if (index[2] + k < 0 || index[2] + k >= MapSize[2]) continue;
+                    _3dViewControlObject.GetComponent<SetCube>().ChangeCube(index[0] + i, index[1] + j, index[2] + k, 2);
+                    if (_gameControllerObject.GetComponent<GameController>().GameStatus != 1) 
+                    {
+                        break;
+                    }
+                    transform.GetChild(index[2] + k).GetChild(index[1] + j).GetChild(MapSize[0] - (index[0] + i) - 1).GetComponent<View2D>().GridStatus = 3;
+                }
+            }
+        }
+    }
+    public void SearchBombNum(int[] index)
+    {
+        int flagNum = 0;
+        for (int i = -1; i <= 1; i++)
+        {
+            if (index[0] + i < 0 || index[0] + i >= MapSize[0]) continue;
+            for (int j = -1; j <= 1; j++)
+            {
+                if (index[1] + j < 0 || index[1] + j >= MapSize[1]) continue;
+                for (int k = -1; k <= 1; k++)
+                {
+                    if (index[2] + k < 0 || index[2] + k >= MapSize[2]) continue;
+                    if (transform.GetChild(index[2] + k).GetChild(index[1] + j).GetChild(MapSize[0] - (index[0] + i) - 1).GetComponent<View2D>().GridStatus == 1 ||
+                        transform.GetChild(index[2] + k).GetChild(index[1] + j).GetChild(MapSize[0] - (index[0] + i) - 1).GetComponent<View2D>().GridStatus == 4)
+                    {
+                        flagNum++;
+                    }
+                }
+            }
+        }
+        if (flagNum >= transform.GetChild(index[2]).GetChild(index[1]).GetChild(MapSize[0] - index[0] - 1).GetComponent<View2D>().AroundBombNum)
+        {
+            AutoOpen(index);
+        }
     }
 }

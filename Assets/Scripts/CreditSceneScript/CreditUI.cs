@@ -5,8 +5,12 @@ using UnityEngine;
 public class CreditUI : MonoBehaviour
 {
     [SerializeField] private GameObject _creditControllerObject;
-    public void gotoPreScene()
+    public void gotoHome()
     {
-        _creditControllerObject.GetComponent<CreditController>().MoveScene(GameStatus.BeforeSceneName);
+        _creditControllerObject.GetComponent<CreditController>().MoveScene("Home");
+    }
+    public void gotoSetting()
+    {
+        _creditControllerObject.GetComponent<CreditController>().MoveScene("Setting");
     }
 }

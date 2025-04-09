@@ -4,54 +4,89 @@ using UnityEngine;
 
 public class CameraControl : MonoBehaviour
 {
-    [SerializeField] private float _thetaX = 0;
-    [SerializeField] private float _thetaY = 0;
-    [SerializeField] private float _length = 50;
-    [SerializeField] private Vector3 _anker = new Vector3(0, 0, 0);
+    [SerializeField] private float _thetaX = 45f;
+    [SerializeField] private float _thetaY = 45f;
+    [SerializeField] private float _length = 50f;
+    [SerializeField] private Vector3 _anker = new Vector3(0f, 0f, 0f);
+    [SerializeField] private Vector3 _averagePos = new Vector3(0f, 0f, 0f);
     [SerializeField] private static Vector3 _direction;
     // Start is called before the first frame update
     void Start()
     {
-        
     }
 
     // Update is called once per frame
     void Update()
     {
-        Vector3 position;
-        position.x = Mathf.Cos(Mathf.Deg2Rad * _thetaX) * Mathf.Cos(Mathf.Deg2Rad * _thetaY);
-        position.y = Mathf.Sin(Mathf.Deg2Rad * _thetaY);
-        position.z = Mathf.Sin(Mathf.Deg2Rad * _thetaX) * Mathf.Cos(Mathf.Deg2Rad * _thetaY);
-        position *= _length;
-        transform.position = position + Anker;
-        transform.LookAt(_anker);
-        _direction = transform.position - Anker;
+    }
+    public float ThetaX
+    {
+        get { return _thetaX; }
+        set { _thetaX = value; }
+    }
+    public float ThetaY
+    {
+        get { return _thetaY; }
+        set { _thetaY = value; }
+    }
+    public float Length
+    {
+        get { return _length; }
+        set { _length = value; }
     }
     public Vector3 Anker
     {
         get { return _anker; }
         set { _anker = value; }
     }
+    public Vector3 AveragePos
+    {
+        get { return _averagePos; }
+        set { _averagePos = value; }
+    }
     public static Vector3 Direction
     {
         get { return _direction; }
+        set { _direction = value; }
     }
     public void UpdateCamPosition(Vector3 v)
     {
-        _thetaX += v.x * 0.2f;
-        _thetaX %= 360;
-        _thetaY += v.y * 0.2f;
-        _thetaY = Mathf.Max(-89.9f, _thetaY);
-        _thetaY = Mathf.Min(89.9f, _thetaY);
+        ThetaX += v.x * 0.2f;
+        ThetaX %= 360;
+        ThetaY += v.y * 0.2f;
+        ThetaY = Mathf.Max(-89.9f, ThetaY);
+        ThetaY = Mathf.Min(89.9f, ThetaY);
+        ChangePosition();
     }
     public void UpdateCamLength(float f)
     {
-        _length -= f * 20;
-        _length = Mathf.Max(0.1f, _length);
+        Length -= f * 20;
+        Length = Mathf.Max(0.1f, Length);
+        ChangePosition();
     }
     public void UpdateAnkerPosition(Vector3 v)
     {
-        _anker += new Vector3(Mathf.Cos(Mathf.Deg2Rad * (_thetaX + 90)), 0, Mathf.Sin(Mathf.Deg2Rad * (_thetaX + 90))) * v.x / 25;
-        _anker += new Vector3(Mathf.Cos(Mathf.Deg2Rad * (_thetaX + 180)) * Mathf.Sin(Mathf.Deg2Rad * (_thetaY)), Mathf.Cos(Mathf.Deg2Rad * (_thetaY)), Mathf.Sin(Mathf.Deg2Rad * (_thetaX + 180)) * Mathf.Sin(Mathf.Deg2Rad * (_thetaY))) * v.y / 25;
+        Anker += new Vector3(Mathf.Cos(Mathf.Deg2Rad * (ThetaX + 90)), 0, Mathf.Sin(Mathf.Deg2Rad * (ThetaX + 90))) * v.x / 25;
+        Anker += new Vector3(Mathf.Cos(Mathf.Deg2Rad * (ThetaX + 180)) * Mathf.Sin(Mathf.Deg2Rad * (ThetaY)), Mathf.Cos(Mathf.Deg2Rad * (ThetaY)), Mathf.Sin(Mathf.Deg2Rad * (ThetaX + 180)) * Mathf.Sin(Mathf.Deg2Rad * (ThetaY))) * v.y / 25;
+        ChangePosition();
+    }
+    public void InitPosition()
+    {
+        ThetaX = 45;
+        ThetaY = 45;
+        Length = 20;
+        Anker = AveragePos;
+        ChangePosition();
+    }
+    public void ChangePosition()
+    {
+        Vector3 position;
+        position.x = Mathf.Cos(Mathf.Deg2Rad * ThetaX) * Mathf.Cos(Mathf.Deg2Rad * ThetaY);
+        position.y = Mathf.Sin(Mathf.Deg2Rad * ThetaY);
+        position.z = Mathf.Sin(Mathf.Deg2Rad * ThetaX) * Mathf.Cos(Mathf.Deg2Rad * ThetaY);
+        Direction = position;
+        position *= Length;
+        transform.position = position + Anker;
+        transform.LookAt(Anker);
     }
 }

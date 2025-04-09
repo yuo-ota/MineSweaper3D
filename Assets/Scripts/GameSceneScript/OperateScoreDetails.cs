@@ -7,27 +7,30 @@ public class OperateScoreDetails : MonoBehaviour
     [SerializeField] private GameObject _gameControllerObject;
     [SerializeField] private List<GameObject> _gameObjectList = new List<GameObject>();
     [SerializeField] private GameObject _prefubObject;
-    [SerializeField] private int _scoreOfDig = 10;
-    [SerializeField] private int _scoreOfHint = 20;
+    [SerializeField] private int _scoreOfDig = 100;
+    [SerializeField] private int _scoreOfHint = 200;
 
     private Vector3 _prefubPos = new Vector3(0f, 0f, 0f);
     public void DigAGrid()
     {
-        SettingPrefub("+" + _scoreOfDig, "dig the grid");
-        _gameControllerObject.GetComponent<GameController>().Score = _scoreOfDig;
+        if (_gameControllerObject.GetComponent<GameController>().IsEnglish) SettingPrefub("+" + _scoreOfDig, "dig the grid");
+        else SettingPrefub("+" + _scoreOfDig, "マス目の開示");
+        _gameControllerObject.GetComponent<GameController>().Score += _scoreOfDig;
     }
     public void UseHint()
     {
-        SettingPrefub("-" + _scoreOfHint, "use a hint");
+        if (_gameControllerObject.GetComponent<GameController>().IsEnglish) SettingPrefub("-" + _scoreOfHint, "use a hint");
+        else SettingPrefub("-" + _scoreOfHint, "ヒントの使用");
         _gameControllerObject.GetComponent<GameController>().Score -= _scoreOfHint;
     }
     public void SettingPrefub(string score, string reason)
     {
         GameObject newPrefub = Instantiate(_prefubObject, _prefubPos, Quaternion.identity);
+        newPrefub.GetComponent<DisplayScoreDetail>().GameControllerObject = _gameControllerObject;
         newPrefub.GetComponent<DisplayScoreDetail>().AddScoreObject = score;
         newPrefub.GetComponent<DisplayScoreDetail>().DetailScoreObject = reason;
         _gameObjectList.Add(newPrefub);
-        newPrefub.transform.SetParent(transform, true);
+        newPrefub.transform.SetParent(transform, false);
         newPrefub.SetActive(false);
         if (_gameObjectList.Count == 1)
         {

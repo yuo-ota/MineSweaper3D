@@ -13,7 +13,7 @@ public class View3D : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        CamObject = transform.parent.parent.GetComponent<SetCube>().CamObject;
+        CamObject = transform.parent.parent.parent.parent.GetComponent<SetCube>().CamObject;
     }
 
     // Update is called once per frame
@@ -59,19 +59,19 @@ public class View3D : MonoBehaviour
                         transform.GetChild(0).gameObject.SetActive(false);
                         if (_aroundBombNum != 27)
                         {
-                            transform.parent.GetChild(1).GetComponent<MeshRenderer>().material = transform.parent.parent.GetComponent<SetCube>().DisplayFlagMaterial;
+                            transform.parent.GetChild(1).GetComponent<MeshRenderer>().material = transform.parent.parent.parent.parent.GetComponent<SetCube>().DisplayFlagMaterial;
                             _cubeStatus = 4;
                         }
                         else
                         {
-                            transform.parent.GetChild(1).GetComponent<MeshRenderer>().material = transform.parent.parent.GetComponent<SetCube>().DisplayFlagMaterial;
+                            transform.parent.GetChild(1).GetComponent<MeshRenderer>().material = transform.parent.parent.parent.parent.GetComponent<SetCube>().DisplayFlagMaterial;
                             _cubeStatus = 1;
                         }
                     }
                     else if (_cubeStatus == 1 || _cubeStatus == 4)
                     {
                         transform.GetChild(0).gameObject.SetActive(false);
-                        transform.parent.GetChild(1).GetComponent<MeshRenderer>().material = transform.parent.parent.GetComponent<SetCube>().NonDisplayFlagMaterial;
+                        transform.parent.GetChild(1).GetComponent<MeshRenderer>().material = transform.parent.parent.parent.parent.GetComponent<SetCube>().NonDisplayFlagMaterial;
                         _cubeStatus = 0;
                     }
                     break;
@@ -80,29 +80,30 @@ public class View3D : MonoBehaviour
                     {
                         if (_aroundBombNum == 27)
                         {
-                            transform.parent.GetChild(1).GetComponent<MeshRenderer>().material = transform.parent.parent.GetComponent<SetCube>().DisplayBombMaterial;
+                            transform.GetChild(0).gameObject.SetActive(false);
+                            transform.parent.GetChild(1).GetComponent<MeshRenderer>().material = transform.parent.parent.parent.parent.GetComponent<SetCube>().DisplayBombMaterial;
                         }
                         else if (_aroundBombNum == 0)
                         {
+                            transform.GetChild(0).gameObject.SetActive(false);
                             _cubeStatus = value;
-                            transform.parent.GetChild(1).GetComponent<MeshRenderer>().material = transform.parent.parent.GetComponent<SetCube>().DigedCubeMaterial;
+                            transform.parent.GetChild(1).GetComponent<MeshRenderer>().material = transform.parent.parent.parent.parent.GetComponent<SetCube>().DigedCubeMaterial;
                         }
                         else
                         {
                             transform.GetChild(0).gameObject.SetActive(true);
                             _cubeStatus = value;
-                            transform.parent.GetChild(1).GetComponent<MeshRenderer>().material = transform.parent.parent.GetComponent<SetCube>().DigedCubeMaterial;
+                            transform.parent.GetChild(1).GetComponent<MeshRenderer>().material = transform.parent.parent.parent.parent.GetComponent<SetCube>().DigedCubeMaterial;
                         }
                     }
                     break;
-                case 3: //äJé¶ë“Çø
+                default: //ä¯ÇÃåÎê›íu
                     if (_cubeStatus == 0)
                     {
                         transform.GetChild(0).gameObject.SetActive(false);
-                        _cubeStatus = value;
+                        transform.parent.GetChild(1).GetComponent<MeshRenderer>().material = transform.parent.parent.parent.parent.GetComponent<SetCube>().DisplayFlagMaterial;
+                        _cubeStatus = 4;
                     }
-                    break;
-                default: //ä¯ÇÃåÎê›íu
                     break;
             }
         }
@@ -112,15 +113,20 @@ public class View3D : MonoBehaviour
         get { return _index; }
         set { _index = value; }
     }
+    public bool SearchDiggedCube()
+    {
+        return (_aroundBombNum != 27 && CubeStatus == 2);
+    }
     public void OpenCube()
     {
         if (_aroundBombNum == 27 && CubeStatus != 1)
         {
-            transform.parent.GetChild(1).GetComponent<MeshRenderer>().material = transform.parent.parent.GetComponent<SetCube>().DisplayBombMaterial;
+            transform.parent.GetChild(1).GetComponent<MeshRenderer>().material = transform.parent.parent.parent.parent.GetComponent<SetCube>().DisplayBombMaterial;
+            transform.GetChild(0).gameObject.SetActive(false);
         }
         else if (CubeStatus == 4)
         {
-            transform.parent.GetChild(1).GetComponent<MeshRenderer>().material = transform.parent.parent.GetComponent<SetCube>().MissFlagMaterial;
+            transform.parent.GetChild(1).GetComponent<MeshRenderer>().material = transform.parent.parent.parent.parent.GetComponent<SetCube>().MissFlagMaterial;
             transform.GetChild(0).gameObject.SetActive(true);
         }
     }

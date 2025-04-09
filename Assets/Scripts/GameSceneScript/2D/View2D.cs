@@ -3,18 +3,24 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
+using UnityEngine.EventSystems;
 
-public class View2D : MonoBehaviour
+public class View2D : MonoBehaviour, IPointerClickHandler
 {
     [SerializeField] private TextMeshProUGUI _textObject;
     [SerializeField] private int _aroundBombNum;
     [SerializeField] private int _gridStatus;
     [SerializeField] private int[] _index;
+    [SerializeField] private int[] _mapSize;
     [SerializeField] private Sprite _displayFlagImage;
     [SerializeField] private Sprite _nonDisplayFlagImage;
     [SerializeField] private Sprite _digedImage;
     [SerializeField] private Sprite _bombDridImage;
     [SerializeField] private GameObject _gameControllerObject;
+
+    [SerializeField] private AudioSource _audioSource;
+    [SerializeField] private AudioClip _leftClickSe;
+    [SerializeField] private AudioClip _rightClickSe;
 
     public int SetText
     {
@@ -27,9 +33,8 @@ public class View2D : MonoBehaviour
     public int GridStatus
     {
         get { return _gridStatus; }
-        set 
+        set
         {
-
             switch (value)
             {
                 case 0: //未着手
@@ -38,29 +43,38 @@ public class View2D : MonoBehaviour
                         transform.GetChild(0).gameObject.SetActive(false);
                         GetComponent<Image>().sprite = _nonDisplayFlagImage;
                         _gridStatus = value;
-                        transform.parent.parent.GetComponent<SetGrid>().ChangeGridStatus(_index, value);
+                        transform.parent.parent.parent.GetComponent<SetGrid>().ChangeGridStatus(Index, value);
 ;                    }
                     break;
                 case 1: //旗の設置/解除
                     if (_gridStatus == 0)
                     {
+                        _audioSource.PlayOneShot(_rightClickSe);
                         transform.GetChild(0).gameObject.SetActive(false);
-                        _gridStatus = 1;
-                        transform.parent.parent.GetComponent<SetGrid>().ChangeGridStatus(_index, 1);
                         GetComponent<Image>().sprite = _displayFlagImage;
+                        if (_aroundBombNum != 27)
+                        {
+                            transform.parent.parent.parent.GetComponent<SetGrid>().ChangeGridStatus(Index, 4);
+                            _gridStatus = 4;
+                        }
+                        else
+                        {
+                            transform.parent.parent.parent.GetComponent<SetGrid>().ChangeGridStatus(Index, 1);
+                            _gridStatus = 1;
+                        }
                     }
-                    else if (_gridStatus == 1)
+                    else if (_gridStatus == 1 || _gridStatus == 4)
                     {
+                        _audioSource.PlayOneShot(_rightClickSe);
                         transform.GetChild(0).gameObject.SetActive(false);
                         _gridStatus = 0;
-                        transform.parent.parent.GetComponent<SetGrid>().ChangeGridStatus(_index, 0);
+                        transform.parent.parent.parent.GetComponent<SetGrid>().ChangeGridStatus(Index, 0);
                         GetComponent<Image>().sprite = _nonDisplayFlagImage;
                     }
                     break;
-                case 2: //開示済み
+                case 2: //開示処理
                     if (_gridStatus == 0 || _gridStatus == 3)
                     {
-                        _gridStatus = value;
                         if (_aroundBombNum == 27)
                         {
                             GetComponent<Image>().sprite = _bombDridImage;
@@ -68,43 +82,91 @@ public class View2D : MonoBehaviour
                         }
                         else if (_aroundBombNum == 0)
                         {
+                            if (_gridStatus == 0) _audioSource.PlayOneShot(_leftClickSe);
+                            transform.GetChild(0).gameObject.SetActive(false);
                             GetComponent<Image>().sprite = _digedImage;
-                            transform.parent.parent.GetComponent<SetGrid>().ChangeGridStatus(_index, value);
-                            _gameControllerObject.GetComponent<GameController>().RemainGridNum--;
+                            transform.parent.parent.parent.GetComponent<SetGrid>().ChangeGridStatus(Index, value);
+                            _gameControllerObject.GetComponent<GameController>().DiggedGrid();
+                            if (!_gameControllerObject.GetComponent<GameController>().IsGameSetting)
+                            {
+                                AutoOpen();
+                            }
                         }
                         else
                         {
+                            _audioSource.PlayOneShot(_leftClickSe);
                             transform.GetChild(0).gameObject.SetActive(true);
                             GetComponent<Image>().sprite = _digedImage;
-                            transform.parent.parent.GetComponent<SetGrid>().ChangeGridStatus(_index, value);
-                            _gameControllerObject.GetComponent<GameController>().RemainGridNum--;
+                            transform.parent.parent.parent.GetComponent<SetGrid>().ChangeGridStatus(Index, value);
+                            _gameControllerObject.GetComponent<GameController>().DiggedGrid();
+                            if (_gridStatus == 3 && !_gameControllerObject.GetComponent<GameController>().IsGameSetting)
+                            {
+                                AutoOpen();
+                            }
                         }
+                        _gridStatus = value;
+                        transform.parent.parent.parent.GetComponent<SetGrid>().ChangeGridStatus(Index, value);
+                    }
+                    else if (_gridStatus == 2 && !_gameControllerObject.GetComponent<GameController>().IsGameSetting)
+                    {
+                        AutoOpen();
                     }
                     break;
                 case 3: //開示待ち
                     if (_gridStatus == 0)
                     {
-                        transform.GetChild(0).gameObject.SetActive(false);
                         _gridStatus = value;
-                        transform.parent.parent.GetComponent<SetGrid>().ChangeGridStatus(_index, value);
+                        GridStatus = 2;
                     }
                     break;
                 default: //旗の誤設置
-                    transform.GetChild(0).gameObject.SetActive(false);
-                    _gridStatus = value;
-                    transform.parent.parent.GetComponent<SetGrid>().ChangeGridStatus(_index, value);
+                    if (_gridStatus == 0)
+                    {
+                        _audioSource.PlayOneShot(_rightClickSe);
+                        transform.GetChild(0).gameObject.SetActive(false);
+                        GetComponent<Image>().sprite = _displayFlagImage;
+                        _gridStatus = 4;
+                    }
                     break;
             }
         }
+    }
+    public void OnPointerClick(PointerEventData eventData)
+    {
+        int status = -1;
+        if (eventData.button == PointerEventData.InputButton.Left) status = 2;
+        else if (eventData.button == PointerEventData.InputButton.Right) status = 1;
+        
+        if (status == -1) return;
+        transform.parent.parent.parent.GetComponent<SetGrid>().ChangeGrid(Index, status);
     }
     public int[] Index
     {
         get { return _index; }
         set { _index = value; }
     }
+    public int[] MapSize
+    {
+        get { return _mapSize; }
+        set { _mapSize = value; }
+    }
+    public int AroundBombNum
+    {
+        get { return _aroundBombNum; }
+    }
     public GameObject GameControllerObject
     {
         get { return _gameControllerObject; }
         set { _gameControllerObject = value; }
+    }
+    public void AutoOpen()
+    {
+        _gridStatus = 2;
+        if (_aroundBombNum == 0)
+        {
+            transform.parent.parent.parent.GetComponent<SetGrid>().AutoOpen(Index);
+            return;
+        }
+        transform.parent.parent.parent.GetComponent<SetGrid>().SearchBombNum(Index);
     }
 }

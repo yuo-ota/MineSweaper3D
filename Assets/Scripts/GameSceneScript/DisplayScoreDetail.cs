@@ -5,29 +5,49 @@ using TMPro;
 
 public class DisplayScoreDetail : MonoBehaviour
 {
+    [SerializeField] private GameObject _gameControllerObject;
     [Header("data")]
     [SerializeField] private bool _hasNext;
     [SerializeField] private int _animStatus = 0;
     [Header("gameObject")]
     [SerializeField] private GameObject _nextObject;
     [SerializeField] private TextMeshProUGUI _addScoreObject;
-    [SerializeField] private TextMeshProUGUI _detailScoreObject;
-    [SerializeField] private GameObject _scoreDetailObject;
+    [SerializeField] private TextMeshProUGUI[] _detailScoreObject;
+    [SerializeField] private GameObject[] _scoreDetailObject;
     [Header("animator")]
-    [SerializeField] private Animator _scoreAnimator;
+    [SerializeField] private Animator[] _scoreAnimator;
+
+    public GameObject GameControllerObject
+    {
+        set { _gameControllerObject = value; } 
+    }
     public void StartAnim()
     {
-        _scoreAnimator.SetBool("startAnim", true);
-        _scoreDetailObject.GetComponent<Animator>().SetBool("startAnim", true);
+        GetComponent<Animator>().SetBool("startAnim", true);
+        if (_gameControllerObject.GetComponent<GameController>().IsEnglish)
+        {
+            _scoreAnimator[0].SetBool("startAnim", true);
+        }
+        else
+        {
+            _scoreAnimator[1].SetBool("startAnim", true);
+        }
     }
-    public void PushAnim()
+        public void PushAnim()
     {
         EndAnim();
     }
     public void EndAnim()
     {
-        _scoreAnimator.SetBool("endAnim", true);
-        _scoreDetailObject.GetComponent<Animator>().SetBool("endAnim", true);
+        GetComponent<Animator>().SetBool("endAnim", true);
+        if (_gameControllerObject.GetComponent<GameController>().IsEnglish)
+        {
+            _scoreAnimator[0].SetBool("endAnim", true);
+        }
+        else
+        {
+            _scoreAnimator[1].SetBool("endAnim", true);
+        }
         _animStatus = 2;
     }
     public void Delete()
@@ -40,7 +60,19 @@ public class DisplayScoreDetail : MonoBehaviour
     }
     public string DetailScoreObject
     {
-        set { _detailScoreObject.text = value; }
+        set 
+        {
+            if (_gameControllerObject.GetComponent<GameController>().IsEnglish)
+            {
+                _scoreDetailObject[0].SetActive(true);
+                _detailScoreObject[0].text = value;
+            }
+            else
+            {
+                _scoreDetailObject[1].SetActive(true);
+                _detailScoreObject[1].text = value;
+            }
+        }
     }
     public bool HasNext
     {
@@ -66,8 +98,15 @@ public class DisplayScoreDetail : MonoBehaviour
     }
     public void SetAnimIdle()
     {
-        _scoreAnimator.SetBool("startAnim", false);
-        _scoreDetailObject.GetComponent<Animator>().SetBool("startAnim", false);
+        GetComponent<Animator>().SetBool("startAnim", false);
+        if (_gameControllerObject.GetComponent<GameController>().IsEnglish)
+        {
+            _scoreAnimator[0].SetBool("startAnim", false);
+        }
+        else
+        {
+            _scoreAnimator[1].SetBool("startAnim", false);
+        }
         _animStatus = 1;
         if (HasNext)
         {

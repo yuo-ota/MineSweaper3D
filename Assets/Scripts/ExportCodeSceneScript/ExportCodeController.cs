@@ -15,33 +15,39 @@ public class ExportCodeController : SceneController
     [SerializeField] private int _usedHintNum;
     [SerializeField] private int _timer;
     [SerializeField] private int _score;
+    [SerializeField] private int _gameStatus;
+    [SerializeField] private bool _isEnglish;
     [Header("")]
     [SerializeField] private int _selectOption;
     [Header("gameObject")]
     [SerializeField] private GameObject _ExportCodeUIObject;
     [SerializeField] private GameObject _checkBoxControlObject;
+    [SerializeField] private GameObject[] _enTextObject;
+    [SerializeField] private GameObject[] _jpTextObject;
 
-    private void Start()
+    void Awake()
     {
-        MapSeed = GameStatus.MapSeed;
-        MapSize = GameStatus.MapSize;
-        Stage = GameStatus.Stage;
-        StageStatus = GameStatus.StageStatus;
-        DiggedGridNum = GameStatus.DiggedGridNum;
-        UsedHintNum = GameStatus.UsedHintNum;
-        Timer = GameStatus.Timer;
-        Score = GameStatus.Score;
+        MapSeed = GameData.MapSeed;
+        MapSize = GameData.MapSize;
+        Stage = GameData.Stage;
+        StageStatus = GameData.StageStatus;
+        DiggedGridNum = GameData.DiggedGridNum;
+        UsedHintNum = GameData.UsedHintNum;
+        Timer = GameData.Timer;
+        Score = GameData.Score;
+        GameStatus = GameData.GameStatus;
+        IsEnglish = GameData.IsEnglish;
     }
     override
     public void MoveScene(string sceneName)
     {
-        GameStatus.BeforeSceneName = "ExportCode";
+        GameData.BeforeSceneName = "ExportCode";
         //シーンのロード
         SceneManager.LoadScene(sceneName);
     }
-    public void UpdateCodeText()
+    public void UpdateCodeText(string exportCode)
     {
-        _ExportCodeUIObject.GetComponent<ExportCodeUI>().ExportCode = "aaaa";   //ここでコードを生成する。
+        _ExportCodeUIObject.GetComponent<ExportCodeUI>().ExportCode = exportCode;   //ここでコードを生成する。
     }
     public int SelectOption
     {
@@ -99,9 +105,48 @@ public class ExportCodeController : SceneController
         get { return _score; }
         set { _score = value; }
     }
+    public int GameStatus
+    {
+        get { return _gameStatus; }
+        set { _gameStatus = value; }
+    }
+    public bool IsEnglish
+    {
+        get { return _isEnglish; }
+        set
+        {
+            _isEnglish = value;
+            UpdateLanguage();
+        }
+    }
     public void UpdateOption()
     {
         _checkBoxControlObject.GetComponent<ControlCheckBox>().SelectOption = SelectOption;
+    }
+    public void UpdateLanguage()
+    {
+        if (IsEnglish)
+        {
+            foreach (GameObject g in _enTextObject)
+            {
+                g.SetActive(true);
+            }
+            foreach (GameObject g in _jpTextObject)
+            {
+                g.SetActive(false);
+            }
+        }
+        else
+        {
+            foreach (GameObject g in _enTextObject)
+            {
+                g.SetActive(false);
+            }
+            foreach (GameObject g in _jpTextObject)
+            {
+                g.SetActive(true);
+            }
+        }
     }
 }
 
