@@ -9,7 +9,9 @@ ___
 ___
 ## web公開リンク
 UnityRoomにて公開しています。
+
 webGLのため一部機能に制限があります。
+
 https://unityroom.com/games/mine-sweeper-3d
 ___
 ## 操作説明
